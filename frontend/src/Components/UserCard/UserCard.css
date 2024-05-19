@@ -1,0 +1,15 @@
+.card{
+    border: 1px solid orange;
+    background-color: rgba(0, 187, 34, 0.1) !important;
+}
+
+.p-user{
+    font-weight: 100;
+    font-size: 14px;
+}
+
+.user-card-btn{
+    border: none;
+    background-color: transparent;
+    color: rgb(255, 145, 0)
+}

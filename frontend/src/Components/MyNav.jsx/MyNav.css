@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Poetsen+One&display=swap');
+
+.nav{
+    height: 70px;
+    color: white;
+    background-image: url("https://i.pinimg.com/originals/db/60/d4/db60d40204f7cd49ad56c22a39291493.jpg");
+    background-size: cover;
+    background-position: center;
+    border-bottom: 2px solid rgb(0, 187, 34);
+}
+
+.nav-col-bkg{
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.brand{
+    height: 40px;
+    font-size: 24pt;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background: linear-gradient(20deg, #009614, #ffffff, #ff0000);
+    background-size: cover;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-container{
+    margin: 5px 10px;
+    border: 1px solid rgb(0, 187, 34);
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.nav-btn-container{
+    color:white;
+    padding-bottom: 5px;
+    border: 1px solid rgb(0, 187, 34);
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.nav-btn{
+    color: rgb(0, 187, 34);
+    font-size: 25pt;
+    border: 1px solid rgb(0, 187, 34);
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.select{
+    height: 6px;
+    border-radius: 10px;
+    margin-top: 1px;
+}
+
+.active{
+    background-color: rgb(0, 187, 34);
+}
+
+.rel-container{
+    position: relative;
+}
+
+.drop-menu{
+    position: absolute;
+    width: 100px;
+    top: 70px;
+    right: 5px;
+    background-color: rgba(255, 181, 149, 0.857);
+    border-left: 1px solid rgb(158, 158, 158);
+    border-right: 1px solid rgb(158, 158, 158);
+    border-bottom: 1px solid rgb(158, 158, 158);
+    border-radius: 0 0 5px 5px;
+    z-index: 100;
+}
+
+.drop-link{
+    color: rgb(0, 187, 34);
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    text-shadow: 3px 3px rgba(0, 255, 225, 0.397);
+}
+
+.user-btn{
+    height: 57px;
+    width: 57px;
+    color: rgb(0, 187, 34);
+    border: 2px solid rgb(0, 187, 34);
+    border-radius: 50%;
+}
+
+.acc-btn{
+    height: 57px;
+    width: 57px;
+    font-size: 25px;
+    color: rgb(0, 187, 34);
+    border: 1px solid rgb(0, 187, 34);
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.fixed-bar{
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+.navbar-space{
+    height: 71px;
+}

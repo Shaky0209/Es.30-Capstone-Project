@@ -1,0 +1,15 @@
+.friends-btm-spc{
+    height: 200px;
+}
+
+.search-cnt{
+    height: 100%;
+    padding-top: 150px;
+}
+
+@media screen and (max-width: 576px){
+
+    .search-cnt{
+        padding-top: 50px;
+    }
+}
