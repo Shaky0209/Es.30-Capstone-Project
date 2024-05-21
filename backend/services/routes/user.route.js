@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { generateJWT, authMidd } from '../authentication/index.js';
+import { authFetchMidd } from '../middleware/authFetchMidd.js';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import User from '../models/user.model.js';
@@ -60,7 +61,7 @@ userRoute.get("/callback", passport.authenticate("google", {session: false}),
     }
 );
 
-userRoute.get("/friends", async(req, res, next)=>{
+userRoute.get("/friends", authMidd, async(req, res, next)=>{
     try{
         let users = await User.find()
         res.send(users);
@@ -150,7 +151,8 @@ userRoute.post("/avanced/src", async(req, res, next)=>{
             let users = await User.find({province: province});
             res.send(users);
         }else{
-            res.send("Enter at least one parameter");
+            let users = await User.find();
+            res.send(users);
         }
         
     }catch(err){

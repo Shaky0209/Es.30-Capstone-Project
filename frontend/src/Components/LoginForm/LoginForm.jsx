@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
-import { Container, Form, Button, Image } from 'react-bootstrap'
+import React, { useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image';
 import UniButton from '../../Components/UniButton/UniButton';
 import { useNavigate } from 'react-router-dom';
 import './LoginForm.css';

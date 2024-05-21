@@ -33,16 +33,16 @@ export const verifyJWT = (token)=>{
 export const authMidd = async(req, res, next)=>{
     try{
         if(!req.headers.authorization){
-            res.status(400).send("Make log in!");
+            res.status(401).send("Make log in!");
         }else{
             const decoded = await verifyJWT(
-                req.header.authorization.relpace("Bearer ", "")
+                req.headers.authorization.replace("Bearer ", "")
             );
-
+            
             if(decoded.exp){
                 delete decoded.iat
                 delete decoded.exp
-
+                
                 const me = await User.findOne({...decoded});
                 if(me){
                     req.user = me;
@@ -56,5 +56,3 @@ export const authMidd = async(req, res, next)=>{
         res.status(401).send("Log in again!");
     }
 }
-
-

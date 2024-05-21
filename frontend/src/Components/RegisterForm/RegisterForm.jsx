@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Form } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
 import UniButton from '../../Components/UniButton/UniButton';
 import { useNavigate } from 'react-router-dom';
 import './RegisterForm.css';
@@ -41,14 +42,13 @@ export default function RegisterForm() {
                     birth: `${day}/${month}/${year}`,
                     age: `${toDay - year}`,
                     sex: sex,
-                    city: city,
-                    province: province,
+                    city: city.toUpperCase(),
+                    province: province.toUpperCase(),
                     password: password,
                     description: description,
                 }
                 console.log(body)
-                let url = process.env.REACT_APP_SERVER_URL;
-                console.log(url);
+                
                 const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/register`,
                     {
                         method:"POST",
@@ -74,126 +74,126 @@ export default function RegisterForm() {
   return (
     <Container fluid className="form-size">
         <Form onSubmit={userRegistry}>
-        <Form.Group className="mb-3">
-            <Form.Label className='text-center w-100'>Inserisci l'immagine principale del tuo profilo</Form.Label> 
-            <Form.Control 
-                type="file"
-                name='Image'
-                className='text-center'
-                onChange={(event)=>setImg(event.target.value)}
-                // required
-            />
-        </Form.Group>
-        <Form.Group className="mb-3">
-            <Form.Control 
-                type="text"
-                className='text-center'
-                placeholder="Nome"
-                onChange={(event)=>setName(event.target.value)}
-                required
-            />
-        </Form.Group>
-        <Form.Group className="mb-3">
-            <Form.Control
-                type="text"
-                className='text-center' 
-                placeholder="Cognome"
-                onChange={(event)=>setSurname(event.target.value)}
-                required
-            />
-        </Form.Group>
-        <Form.Group className="mb-3">
-            <Form.Control
-                type="text" 
-                className='text-center' 
-                placeholder="e-mail"
-                onChange={(event)=>setEmail(event.target.value)}
-                required
-            />
-        </Form.Group>
-        <Form.Label className='text-center w-100'>Inserisci la tua data di nascita</Form.Label>
-        <Form.Group className="mb-3">
-            <Form.Control
-                type="date" 
-                className='text-center' 
-                placeholder="Data di nascita"
-                onChange={(event)=>setBirth(event.target.value)}
-                required
-            />
-        </Form.Group>
-        
-        <div className="d-flex justify-content-center mb-3">
-            <Form.Check type="radio" id="sex" className='me-2'>
-                <Form.Check.Input
-                    type="radio"
-                    name="sex"
-                    value={"male"}
-                    onChange={(event)=>setSex(event.target.value)}
-                    isValid
+            <Form.Group className="mb-3">
+                <Form.Label className='text-center w-100'>Inserisci l'immagine principale del tuo profilo</Form.Label> 
+                <Form.Control 
+                    type="file"
+                    name='Image'
+                    className='text-center'
+                    onChange={(event)=>setImg(event.target.value)}
+                    // required
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control 
+                    type="text"
+                    className='text-center'
+                    placeholder="Nome"
+                    onChange={(event)=>setName(event.target.value)}
                     required
                 />
-                <Form.Check.Label style={{color:"black"}}>Maschio</Form.Check.Label>
-            </Form.Check>
-
-            <Form.Check type="radio" id="sex">
-                <Form.Check.Input
-                    type="radio"
-                    name="sex"
-                    value={"female"}
-                    onChange={(event)=>setSex(event.target.value)}
-                    isValid
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control
+                    type="text"
+                    className='text-center' 
+                    placeholder="Cognome"
+                    onChange={(event)=>setSurname(event.target.value)}
                     required
                 />
-                <Form.Check.Label style={{color:"black"}}>Femmina</Form.Check.Label>
-            </Form.Check>
-        </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control
+                    type="text" 
+                    className='text-center' 
+                    placeholder="e-mail"
+                    onChange={(event)=>setEmail(event.target.value)}
+                    required
+                />
+            </Form.Group>
+            <Form.Label className='text-center w-100'>Inserisci la tua data di nascita</Form.Label>
+            <Form.Group className="mb-3">
+                <Form.Control
+                    type="date" 
+                    className='text-center' 
+                    placeholder="Data di nascita"
+                    onChange={(event)=>setBirth(event.target.value)}
+                    required
+                />
+            </Form.Group>
+            
+            <div className="d-flex justify-content-center mb-3">
+                <Form.Check type="radio" id="sex" className='me-2'>
+                    <Form.Check.Input
+                        type="radio"
+                        name="sex"
+                        value={"male"}
+                        onChange={(event)=>setSex(event.target.value)}
+                        isValid
+                        required
+                    />
+                    <Form.Check.Label style={{color:"black"}}>Maschio</Form.Check.Label>
+                </Form.Check>
 
-        <Form.Group className="mb-3">
-            <Form.Control
-                type="text" 
-                className='text-center' 
-                placeholder="Città"
-                onChange={(event)=>setCity(event.target.value)}
-                required
-            />
-        </Form.Group>
-        <Form.Group className="mb-3">
-            <Form.Control
-                type="text" 
-                className='text-center' 
-                placeholder="Provincia"
-                onChange={(event)=>setProvince(event.target.value)}
-                required
-            />
-        </Form.Group>
-        <Form.Group className="mb-3">
-            <Form.Control
-                type="password"
-                className='text-center' 
-                placeholder="Password"
-                onChange={(event)=>setPassword(event.target.value)}
-                required
-            />
-        </Form.Group>
-        <Form.Group className="mb-3">
-            <Form.Control
-                type="password"
-                className='text-center' 
-                placeholder="Ripeti Password"
-                onChange={(event)=>setRePassword(event.target.value)}
-                required
-            />
-        </Form.Group>
-        <Form.Group className="mb-3">
-            <Form.Control
-                as="textarea"
-                rows={3}
-                placeholder='Dicci qualcosa su di te, hobbies, interessi, oppure la tua frase preferita...'
-                onChange={(event)=>setDescription(event.target.value)}
-                required
-            />
-        </Form.Group>
-        <UniButton type={type} label={label}/>
+                <Form.Check type="radio" id="sex">
+                    <Form.Check.Input
+                        type="radio"
+                        name="sex"
+                        value={"female"}
+                        onChange={(event)=>setSex(event.target.value)}
+                        isValid
+                        required
+                    />
+                    <Form.Check.Label style={{color:"black"}}>Femmina</Form.Check.Label>
+                </Form.Check>
+            </div>
+
+            <Form.Group className="mb-3">
+                <Form.Control
+                    type="text" 
+                    className='text-center' 
+                    placeholder="Città"
+                    onChange={(event)=>setCity(event.target.value.toUpperCase())}
+                    required
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control
+                    type="text" 
+                    className='text-center' 
+                    placeholder="Provincia"
+                    onChange={(event)=>setProvince(event.target.value.toUpperCase())}
+                    required
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control
+                    type="password"
+                    className='text-center' 
+                    placeholder="Password"
+                    onChange={(event)=>setPassword(event.target.value)}
+                    required
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control
+                    type="password"
+                    className='text-center' 
+                    placeholder="Ripeti Password"
+                    onChange={(event)=>setRePassword(event.target.value)}
+                    required
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder='Dicci qualcosa su di te, hobbies, interessi, oppure la tua frase preferita...'
+                    onChange={(event)=>setDescription(event.target.value)}
+                    required
+                />
+            </Form.Group>
+            <UniButton type={type} label={label}/>
         </Form>
     </Container>
   )

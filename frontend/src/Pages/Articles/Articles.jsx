@@ -1,19 +1,81 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MenuContext } from '../../Context/MenuContextProvider';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Form from 'react-bootstrap/Form';
+import SingleArticle from '../../Components/SingleArticle/SingleArticle';
 import './Articles.css';
 
 export default function Articles() {
 
   const {setMenu} = useContext(MenuContext);
-  const [category, setCategory] = useState("");
+  const [categoryType, setCategoryType] = useState("");
   const [title, setTitle] = useState("");
+  const [articles, setArticles] = useState([]);
+  const navigate = useNavigate();
+  let token = localStorage.getItem("token");
+
+  const getArticles = async()=>{
+    try{
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/all`, 
+        {
+          method:"GET",
+          header:{"Authorization":"Bearer" + token}
+        })
+
+        if(response.ok){
+          let json = await response.json();
+          console.log("articles = ", json)
+          setArticles(json);
+        }
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const getCategory = async() =>{
+    try{
+    let body = {category: categoryType}
+    console.log("body category = ", body);
+    console.log("token == ", token);
+
+      console.log(`${process.env.REACT_APP_SERVER_URL}/articles/category`);
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/category`,
+        {
+          method:"POST",
+          body: JSON.stringify(body),
+          headers:{"Authorization":"Bearer " + token,"Content-Type":"application/json"}
+        }
+      )
+
+      if(response.ok){
+        let json = await response.json();
+        console.log("category res = ", json)
+        setArticles(json);
+        console.log("Fetch get category successful!");
+      }else{
+        console.log("Fetch get category failed!");
+      }
+
+    }catch(err){
+      console.log(err);
+    }
+  }
+  
+  useEffect(()=>{
+    getArticles();
+  }, [])
 
   useEffect(()=>{
-    if(category.length > 0){
-      console.log("category = ", category)
+    if(categoryType.length > 0){
+      console.log("///useEffect");
+      getCategory();
+    }else{
+      getArticles();
     }
-  }, [category]);
+  },[categoryType]);
+
 
   return (
     <Container fluid onClick={()=>setMenu(false)}>
@@ -21,17 +83,17 @@ export default function Articles() {
         <Container fluid className='d-flex mb-4 w-100'>
           <div className='form-slc d-flex flex-column align-items-center'>
             <Form.Label className='mb-0' htmlFor="category">Categoria:</Form.Label>
-            <Form.Select id="category" onChange={(event)=>setCategory(event.target.value)} size='sm'>
+            <Form.Select id="category" onChange={(event)=>setCategoryType(event.target.value)} size='sm'>
               <option value=""></option>
-              <option value="car">Auto</option>
-              <option value="motorcycle">Moto</option>
-              <option value="electronics">Elettronica</option>
-              <option value="informatics">Informatica</option>
-              <option value="telephony">Telefonia</option>
+              <option value="Auto">Auto</option>
+              <option value="Moto">Moto</option>
+              <option value="Elettronica">Elettronica</option>
+              <option value="Informatica">Informatica</option>
+              <option value="Telefonia">Telefonia</option>
               <option value="Sport">Sport</option>
-              <option value="properties">Immobili</option>
-              <option value="housewares">Casalinghi</option>
-              <option value="work">Lavoro</option>
+              <option value="Immobili">Immobili</option>
+              <option value="Casalinghi">Casalinghi</option>
+              <option value="Lavoro">Lavoro</option>
             </Form.Select>
           </div>
           <Container fluid className='d-flex flex-column align-items-center'>
@@ -43,11 +105,32 @@ export default function Articles() {
               size='sm'
             />
           </Container>
+          <button className='article-add-btn mt-2' onClick={()=>navigate("/articles/new")} >Aggiungi Articolo</button>
         </Container>
       </Form>
-      <Container>
+      <Container fluid className='offset-1 offset-md-0'>
         <Row>
-          <div style={{height:"100vh"}}></div>
+          {articles.map((article)=>{
+
+            const{_id, img, category, title, description, city, province, contact, user, createdAt} = article;
+
+            return(
+                <SingleArticle
+                  key={_id}
+                  img={img}
+                  category={category}
+                  title={title}
+                  description={description}
+                  city={city}
+                  province={province}
+                  contact={contact}
+                  user={user}
+                  id={_id}
+                  posted={createdAt}
+                />
+            )
+          })}
+          <div style={{height:"150px"}}></div>
         </Row>
       </Container>
     </Container>

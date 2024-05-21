@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
 import RegisterForm from '../../Components/RegisterForm/RegisterForm';
 
 export default function Register() {

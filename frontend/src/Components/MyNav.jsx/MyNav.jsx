@@ -1,9 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faUserGroup, faUser} from "@fortawesome/free-solid-svg-icons";
 import { MenuContext } from "../../Context/MenuContextProvider";
+import { TokenContext } from "../../Context/TokenContextProvider";
+import { UserContext } from "../../Context/UserContextProvider";
 import { PiArticleMediumBold } from "react-icons/pi";
 import "./MyNav.css";
 
@@ -17,15 +21,18 @@ export default function MyNav() {
   const { menu, setMenu } = useContext(MenuContext);
   
   const path = window.location.pathname;
-  let token = localStorage.getItem("token");
-  let user = localStorage.getItem("user");
+  const {token, setToken} = useContext(TokenContext);
+  const {user, setUser} = useContext(UserContext);
+  let params = new URLSearchParams(document.location.pathname);  
+
   console.log("navbar user = ", user);
 
   const getUserImg = async()=>{
     try{
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/get/${user}`, 
         {
-          method:"GET"
+          method:"GET",
+          headers:{"Authorization":"Bearer " + token,},
         }
       )
 
@@ -41,6 +48,11 @@ export default function MyNav() {
     }
     
   };
+
+  useEffect(()=>{
+    setToken(localStorage.getItem("token"));
+    setUser(localStorage.getItem("user"));
+  }, [])
   
   useEffect(()=>{
     switch(path !== ""){
@@ -69,7 +81,12 @@ export default function MyNav() {
   useEffect(()=>{
     getUserImg();
   }, [token]);
+
+  console.log("Nav Token = ", token);
+  console.log("Nav User = ", user);
+
   console.log("user img = ", userImg);
+
   return (
     <Container fluid className="p-0">
       <div className="fixed-bar">
@@ -130,7 +147,7 @@ export default function MyNav() {
               {token && <button
                 type="button"
                 onClick={() => setMenu(!menu)}
-                style={{backgroundImage:`url(${(userImg??userImg) ? userImg : "https://pluspng.com/img-png/png-user-icon-person-icon-png-people-person-user-icon-2240.png"})`, backgroundSize:"cover", backgroundPosition:"center"}}
+                style={{backgroundImage:`url(${(userImg && userImg) ? userImg : "https://pluspng.com/img-png/png-user-icon-person-icon-png-people-person-user-icon-2240.png"})`, backgroundSize:"cover", backgroundPosition:"center"}}
                 className="user-btn mx-1"
               >              
               </button>}
@@ -144,7 +161,17 @@ export default function MyNav() {
                 {token && <Link to="/profile" className="drop-link py-1">
                     Profilo
                 </Link>}
-                {token && <Link to="/" onClick={()=>{setMenu(false); setUserImg(null); localStorage.setItem("token", ""); localStorage.setItem("user", "");}} className="drop-link py-1">
+                {token && <Link
+                    to="/"
+                    onClick={()=>{
+                      setMenu(false);
+                      setUserImg(null);
+                      setToken(false);
+                      setUser(false);
+                      localStorage.removeItem("token", "");
+                      localStorage.removeItem("user", "");
+                      }}
+                    className="drop-link py-1">
                     Esci
                 </Link>}
               </div>

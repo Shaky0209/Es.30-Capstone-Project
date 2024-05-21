@@ -1,3 +1,15 @@
 .form-slc{
     width: 150px;
 }
+
+#category{
+    height: 30px !important;
+}
+
+.article-add-btn{
+    font-style: italic;
+    border-radius: 5px;
+    border: 2px solid orange;
+    color: orangered;
+    background-color: rgb(255, 202, 182);
+}

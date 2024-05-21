@@ -1,10 +1,11 @@
-import express from 'express';
 import { config } from 'dotenv';
 import { userRoute } from './services/routes/user.route.js';
+import { articleRoute } from './services/routes/article.route.js';
+import cors from 'cors';
+import express from 'express';
 import passport from 'passport';
 import mongoose from 'mongoose';
-import googleStrategy from './services/authentication/passport.js'
-import cors from 'cors';
+import googleStrategy from './services/authentication/passport.js';
 
 config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 passport.use("google", googleStrategy);
 app.use("/user", userRoute );
+app.use("/articles", articleRoute);
 
 const initServer = async()=>{
     try{

@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { Container, Form } from "react-bootstrap";
+import React, { useState, useContext } from "react";
+import { TokenContext } from '../../Context/TokenContextProvider.jsx';
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
 import UniButton from "../UniButton/UniButton";
 import "./FriendsAvancedSrc.css";
 
-export default function FriendsAvancedSrc2() {
+export default function FriendsAvancedSrc({setFriends}) {
 
   const [sex, setSex] = useState("");
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
   const [ageMin, setAgeMin] = useState("");
   const [ageMax, setAgeMax] = useState("");
-  let token = localStorage.getItem("token");
+  const {token, setToken} = useContext(TokenContext)
   const type = "submit";
   const label = "Cerca";
 
@@ -24,36 +26,39 @@ export default function FriendsAvancedSrc2() {
       ageMin: ageMin,
       ageMax: ageMax,
     }
-    console.log(`${process.env.REACT_APP_SERVER_URL}`)
+    
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/avanced/src`,
       {
         method:"POST",
         body: JSON.stringify(body),
-        headers:{"Content-type":"application/json;charset=UTF-8"}
+        headers:{"Authorization":"Bearer " + token,  "Content-type":"application/json;charset=UTF-8"}
       })
 
       if(response.ok){
         let json = await response.json();
+        console.log("sarch friends = ", json);
+        setFriends(json);
         console.log("Fetch src success!");
-        console.log(json);
       }else{
         console.log("Fetch src failed!");
       }
   };
+
+  
 
   return (
     <Container fluid className="form-src-cnt d-flex flex-column align-items-center py-3">
       <h4 className="text-center">Ricerca Avanzata</h4>
       <Form onSubmit={(event)=>avancedSrc(event)} className="px-2">
         <Form.Control
-          onChange={(event) => setProvince(event.target.value)}
+          onChange={(event) => setProvince(event.target.value.toUpperCase())}
           className="my-2"
           size="sm"
           type="text"
           placeholder="Provincia"
         />
         <Form.Control
-          onChange={(event) => setCity(event.target.value)}
+          onChange={(event) => setCity(event.target.value.toUpperCase())}
           className="my-2"
           size="sm"
           type="text"

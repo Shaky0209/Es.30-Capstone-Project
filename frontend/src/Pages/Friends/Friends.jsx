@@ -7,15 +7,16 @@ import './Friends.css';
 export default function Friends() {
   const [friends, setFriends] = useState([]);
   const [spin, setSpin] = useState(false);
-  const {setMenu} = useContext(MenuContext)
+  const {setMenu} = useContext(MenuContext);
+  let token = localStorage.getItem("token");
 
   const getFriends = async () => {
     setSpin(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}/user/friends`,
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/friends`,
         {
           method: "GET",
+          headers:{"Authorization":"Bearer " + token}
         }
       );
 
@@ -30,6 +31,7 @@ export default function Friends() {
         console.log("Fetch get friends failed!");
       }
     } catch (err) {
+      setSpin(false)
       console.error(err);
     }
   };
@@ -37,6 +39,10 @@ export default function Friends() {
   useEffect(() => {
     getFriends();
   }, []);
+
+  useState(()=>{
+    console.log("friends = ", friends);
+  }, [friends]);
 
   return (
     <div className="container-fluid" onClick={()=>setMenu(false)}>
@@ -47,30 +53,31 @@ export default function Friends() {
       <div className="row">
         <div className="col-sm-4 col-md-3 col-xxl-2 px-5 px-sm-2">
           <div className="search-cnt">
-            <FriendsAvancedSrc/>
+            <FriendsAvancedSrc setFriends={setFriends} />
           </div>
         </div>
         <div className="offset-1 offset-sm-0 col-10 col-sm-8 col-md-9 col-xxl-10 mt-5">
           <div className="row">
-          {friends.map((friend) => {
-            const { image, name, surname, birth, age, sex, city, province, description, _id } = friend;
-
-            return (
-              <UserCard
-                key={_id}
-                id={_id}
-                image={image}
-                name={name}
-                surname={surname}
-                birth={birth}
-                age={age}
-                sex={sex}
-                city={city}
-                province={province}
-                description={description}
-              />
-            );
-          })}
+            {console.log("friends = =",friends)}
+            {friends.map((friend) => {
+              const { image, name, surname, birth, age, sex, city, province, description, _id } = friend;
+  
+              return (
+                <UserCard
+                  key={_id}
+                  id={_id}
+                  image={image}
+                  name={name}
+                  surname={surname}
+                  birth={birth}
+                  age={age}
+                  sex={sex}
+                  city={city}
+                  province={province}
+                  description={description}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

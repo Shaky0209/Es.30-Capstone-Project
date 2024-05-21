@@ -1,5 +1,5 @@
-import React from 'react'
-import { Col } from 'react-bootstrap'
+import React from 'react';
+import Col from 'react-bootstrap/Col';
 import './UserCard.css';
 
 export default function UserCard({image, name, surname, sex, birth, age, city, province, description, id }) {
