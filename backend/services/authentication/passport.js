@@ -24,11 +24,12 @@ const googleStrategy = new GoogleStrategy(options, async( _, __, profile, passpo
                 surname:"Cognome",
                 email: email,
                 birth: "01-01-1990",
-                sex:"M/F",
+                sex:"male",
                 city:"Roma",
                 password: sub,
                 googleId: sub,
                 description:"Ciao...",
+                msgBox:[],
             });
 
             await newUser.save();

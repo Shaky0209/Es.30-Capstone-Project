@@ -1,0 +1,25 @@
+.profile-cnt{
+    border: 1px solid orangered;
+    border-radius: 10px;
+}
+
+.img{
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 10px;
+}
+
+.label{
+    color: orangered;
+}
+
+.btm-space-profile{
+    height: 200px;
+}
+
+.msgBox{
+    color: orangered;
+}
+
+.mail{
+    color: orange;
+}

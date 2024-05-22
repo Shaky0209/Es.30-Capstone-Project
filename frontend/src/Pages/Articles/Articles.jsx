@@ -1,36 +1,42 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MenuContext } from '../../Context/MenuContextProvider';
-import Container from 'react-bootstrap/Container';
+import { TokenContext } from '../../Context/TokenContextProvider';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
 import SingleArticle from '../../Components/SingleArticle/SingleArticle';
 import './Articles.css';
 
 export default function Articles() {
-
+  
+  const {token} = useContext(TokenContext);
   const {setMenu} = useContext(MenuContext);
   const [categoryType, setCategoryType] = useState("");
   const [title, setTitle] = useState("");
   const [articles, setArticles] = useState([]);
   const navigate = useNavigate();
-  let token = localStorage.getItem("token");
 
   const getArticles = async()=>{
     try{
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/all`, 
         {
           method:"GET",
-          header:{"Authorization":"Bearer" + token}
+          header:{"Authorization":"Bearer " + token}
         })
 
         if(response.ok){
           let json = await response.json();
           console.log("articles = ", json)
           setArticles(json);
+          console.log("Fetch get all articles successful!");
+        }else{
+          console.log(response);
+          console.log("token articles = ", token);
+          console.log("Fetch get all articles failed!");
         }
-    }catch(err){
-      console.log(err);
+      }catch(err){
+        console.log(err);
     }
   }
 

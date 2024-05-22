@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import UniButton from '../../Components/UniButton/UniButton';
 import { useNavigate } from 'react-router-dom';
+import { TokenContext } from '../../Context/TokenContextProvider.jsx';
 import './RegisterForm.css';
 
 export default function RegisterForm() {
@@ -19,9 +20,38 @@ export default function RegisterForm() {
     const [rePassword, setRePassword] = useState("");
     const [description, setDescription] = useState("");
 
+    const {token} = useContext(TokenContext);
+
     const label = "Registrati!";
     const type = "submit"
     const navigate = useNavigate();
+
+    const updateUserImg = async(id)=>{
+
+        const body = new FormData();
+        body.append('image', img);
+        // console.log(`${process.evn.REACT_APP_SERVER_URL}/${email}/user-img`);
+        try{
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/${id}/user-img`,
+                {
+                    method:"PATCH",
+                    body: body,
+                    headers:{"Authorization":"Bearer " + token},
+                }
+            );
+
+            if(response.ok){
+                let json = await response.json();
+                console.log("Resp Update = ", json )
+                console.log("Fetch ImgUpdate successful!");
+            }else{
+                console.log("Fetch ImgUpdate failed!");
+            }
+            
+        }catch(err){
+            console.log(err);
+        }
+    };
 
     const userRegistry = async (event)=>{
         event.preventDefault();
@@ -35,6 +65,7 @@ export default function RegisterForm() {
                 let month = new Date(birth).getMonth() + 1;
                 let year = new Date(birth).getFullYear();
                 let toDay = new Date().getFullYear();
+
                 let body = {
                     name: name, 
                     surname: surname,
@@ -47,6 +78,7 @@ export default function RegisterForm() {
                     password: password,
                     description: description,
                 }
+
                 console.log(body)
                 
                 const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/register`,
@@ -57,6 +89,11 @@ export default function RegisterForm() {
                     }
                 )
                 if(response.ok){
+                    let json = await response.json();
+                    console.log("register response = ", json);
+                    if(img){
+                        updateUserImg(json._id);
+                    }
                     console.log("Register fetch successful!");
                     alert("Registrazione avvenuta con successo! Verrai reindirizzato alla Home Page!")
                     navigate("/");
@@ -80,7 +117,7 @@ export default function RegisterForm() {
                     type="file"
                     name='Image'
                     className='text-center'
-                    onChange={(event)=>setImg(event.target.value)}
+                    onChange={(event)=>setImg(event.target.files[0])}
                     // required
                 />
             </Form.Group>

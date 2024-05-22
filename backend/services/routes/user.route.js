@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { generateJWT, authMidd } from '../authentication/index.js';
-import { authFetchMidd } from '../middleware/authFetchMidd.js';
+import { generateJWT, authMidd, authMiddMe} from '../authentication/index.js';
+import cloudUserMidd from '../middleware/multerUser.js';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import User from '../models/user.model.js';
@@ -40,7 +40,7 @@ userRoute.post("/login", async(req, res, next)=>{
     }
 });
 
-userRoute.get("/me", authMidd, async(req, res, next)=>{
+userRoute.get("/me", authMiddMe, async(req, res, next)=>{
     try{
         let user = await User.findById(req.user.id);
         res.send(user)
@@ -70,7 +70,7 @@ userRoute.get("/friends", authMidd, async(req, res, next)=>{
     }
 });
 
-userRoute.delete("/delete/:id", async(req, res, next)=>{
+userRoute.delete("/delete/:id", authMidd, async(req, res, next)=>{
     try{
         const user = await User.deleteOne({_id: req.params.id});
         res.sendStatus(204);
@@ -79,7 +79,7 @@ userRoute.delete("/delete/:id", async(req, res, next)=>{
     }
 });
 
-userRoute.get("/get/:id", async(req, res, next)=>{
+userRoute.get("/get/:id", authMidd, async(req, res, next)=>{
     try{
         let user = await User.findById(req.params.id);
         res.send(user);
@@ -88,7 +88,7 @@ userRoute.get("/get/:id", async(req, res, next)=>{
     }
 });
 
-userRoute.put("/edit/:id", async(req, res, next)=>{
+userRoute.put("/edit/:id", authMidd, async(req, res, next)=>{
     try{
         let userEdit = await User.findByIdAndUpdate(req.params.id, req.body, {new:true});
         res.send(userEdit);
@@ -97,7 +97,7 @@ userRoute.put("/edit/:id", async(req, res, next)=>{
     }
 });
 
-userRoute.post("/avanced/src", async(req, res, next)=>{
+userRoute.post("/avanced/src", authMidd, async(req, res, next)=>{
 
     let age = req.body.ageMin || false;
     let sex = req.body.sex || false;
@@ -155,6 +155,55 @@ userRoute.post("/avanced/src", async(req, res, next)=>{
             res.send(users);
         }
         
+    }catch(err){
+        next(err);
+    }
+});
+
+userRoute.patch("/:id/user-img", cloudUserMidd, async(req, res, next)=>{
+    try{
+        let updatedUserImg = await User.findByIdAndUpdate(
+            req.params.id,
+            {image: req.file.path},
+            {new: true}
+        );
+
+        res.send(updatedUserImg);
+    }catch(err){
+        next(err);
+    }
+    
+});
+
+userRoute.post("/message/:id", async(req, res, next)=>{
+    try{
+        let user = await User.findById(req.params.id);
+
+        if(user){
+            user.msgBox.push(req.body);
+            await user.save();
+            res.send(user.msgBox);
+        }
+    }catch(err){
+        next(err);
+    }
+});
+
+userRoute.delete("/message/delete/:msgId/:userId", async(req, res, next)=>{
+    try{
+        let user = await User.findById(req.params.userId);
+        if(user){
+            let msg = await user.msgBox.id(req.params.msgId);
+            if(msg){
+                user.msgBox.pull(msg);
+                await user.save();
+                res.sendStatus(204);
+            }else{
+                res.sendStatus(404);
+            }
+        }else{
+            res.sendStatus(404);
+        }
     }catch(err){
         next(err);
     }

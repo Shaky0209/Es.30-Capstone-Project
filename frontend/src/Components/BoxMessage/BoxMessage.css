@@ -1,0 +1,102 @@
+.msg-auth{
+    font-size: 14pt;
+    color: orangered;
+}
+
+.top-msg{
+    background-color: orange;
+    border-radius: 10px 10px 0 0 ;
+}
+
+.msg-box{
+    border: 1px solid orangered;
+    border-radius: 10px;
+}
+
+.msg-btn{
+    color: orangered;
+    margin: 0 5px;
+    border: 1px solid orangered;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+.msg-btn:hover{
+    background-color: rgb(255, 178, 131);
+}
+.msg-btn:active{
+    background-color: rgb(255, 178, 131);
+    transform: scale(0.93);
+}
+
+.reply, .delete{
+    height: 300px;
+    width: 500px;
+    position: fixed;
+    top: calc((100% - 300px)/2);
+    left: calc((100% - 500px)/2);
+    border: 2px solid orangered;
+    border-radius: 10px;
+    background-color: rgb(255, 208, 170);
+}
+
+.from{
+    color: orangered;
+    text-shadow: none;
+}
+
+.top-reply, .top-del{
+    border-radius: 10px 10px 0 0;
+    background-color: orange;
+}
+
+.sender, .msg-del{
+    color:white;
+    text-shadow: 2px 2px orangered;
+}
+
+.reply-cls{
+    height: 30px;
+    width: 30px;
+    color: orangered;
+    border: 1px solid orangered;
+    border-radius: 5px;
+}
+
+.del-body{
+    height: 200px;
+    border-bottom: 1px solid orangered;
+}
+
+.sure{
+    color: orangered;
+}
+
+.alert-background{
+    background-color: rgba(255, 0, 0, 0.312) !important;
+}
+
+.posted{
+    font-size: 8pt;
+}
+
+@media screen and (max-width: 575px){
+
+    .reply{
+        height: 400px !important;
+        width: 260px;
+        top: calc((100% - 400px)/2);
+        left: calc((100% - 260px)/2);
+    }
+
+    .delete{
+        width: 260px;
+        left: calc((100% - 260px)/2);
+    }
+
+    .textarea{
+        width: 230px !important;
+        height: 250px !important;
+    }
+
+}

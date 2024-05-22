@@ -88,6 +88,7 @@ export default function MyNav() {
   console.log("user img = ", userImg);
 
   return (
+    <>
     <Container fluid className="p-0">
       <div className="fixed-bar">
         <Row className="nav display-flex justify-content-between px-0 mx-0">
@@ -180,6 +181,100 @@ export default function MyNav() {
         </Row>
       </div>
       <div className="navbar-space"></div>
-    </Container> 
+    </Container>
+    
+
+    <Container fluid className="p-0 d-none">
+      <div className="fixed-bar">
+        <Row className="nav display-flex justify-content-between px-0 mx-0">
+          <Col className="nav-col-bkg d-flex align-items-center px-0">
+            <div className="brand-container-resp d-flex align-items-center">
+              <p className="brand-resp mb-2 px-2">FabrianoSocial.it</p>
+            </div>
+          </Col>
+          <Col className="nav-col-bkg d-flex px-0">
+            
+          </Col>
+        </Row>
+      </div>
+      <div className="navbar-space-resp d-flex flex-column justify-content-end">
+      <div className="d-flex flex-column justify-content-end ms-1">
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              navigate("/");
+              setMenu(false);
+            }}
+            className="nav-btn-resp">
+            <FontAwesomeIcon icon={faHouse} />
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              navigate("/friends");
+              setMenu(false);
+            }}
+            className="nav-btn-resp">
+            <FontAwesomeIcon icon={faUserGroup} />
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              navigate("/articles");
+              setMenu(false);
+            }}
+            className="nav-btn-resp">
+            <PiArticleMediumBold />
+          </button>
+        </div>
+      </div>
+        <div className="d-flex justify-content-end pt-1">
+          {!token && <button
+            type="button"
+            onClick={() => setMenu(!menu)}
+            className="acc-btn-resp me-2">
+            <FontAwesomeIcon icon={faUser}
+          />
+          </button>}
+        </div>
+        {token && <button
+          type="button"
+          onClick={() => setMenu(!menu)}
+          style={{backgroundImage:`url(${(userImg && userImg) ? userImg : "https://pluspng.com/img-png/png-user-icon-person-icon-png-people-person-user-icon-2240.png"})`, backgroundSize:"cover", backgroundPosition:"center"}}
+          className="user-btn-resp ms-2"
+        >              
+        </button>}
+        <div className={`drop-menu d-flex flex-column align-items-center ${menu ? "" : "d-none"}`}>
+          {!token &&<Link to="/register" onClick={() => {setMenu(false);}} className="drop-link py-1">
+            Registrati
+          </Link>}
+          {!token && <Link to="/login" onClick={() => {setMenu(false);}} className="drop-link py-1">
+            Login
+          </Link>}
+          {token && <Link to="/profile" className="drop-link py-1">
+              Profilo
+          </Link>}
+          {token && <Link
+              to="/"
+              onClick={()=>{
+                setMenu(false);
+                setUserImg(null);
+                setToken(false);
+                setUser(false);
+                localStorage.removeItem("token", "");
+                localStorage.removeItem("user", "");
+                }}
+              className="drop-link py-1">
+              Esci
+          </Link>}
+        </div>
+      </div>
+    </Container>
+    </>
   );
 }

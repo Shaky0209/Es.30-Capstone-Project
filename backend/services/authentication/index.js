@@ -30,7 +30,7 @@ export const verifyJWT = (token)=>{
     });
 }
 
-export const authMidd = async(req, res, next)=>{
+export const authMiddMe = async(req, res, next)=>{
     try{
         if(!req.headers.authorization){
             res.status(401).send("Make log in!");
@@ -51,6 +51,18 @@ export const authMidd = async(req, res, next)=>{
                     res.status(401).send("User not Found!");
                 }
             }
+        }
+    }catch(err){
+        res.status(401).send("Log in again!");
+    }
+}
+
+export const authMidd = async(req, res, next)=>{
+    try{
+        if(!req.headers.authorization){
+            res.status(401).send("Make log in!");
+        }else{
+            next();
         }
     }catch(err){
         res.status(401).send("Log in again!");

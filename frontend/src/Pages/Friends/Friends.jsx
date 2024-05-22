@@ -45,7 +45,7 @@ export default function Friends() {
   }, [friends]);
 
   return (
-    <div className="container-fluid" onClick={()=>setMenu(false)}>
+    <div className="friends-page container-fluid" onClick={()=>setMenu(false)}>
       <div style={{height:"80vh"}} className={`d-flex justify-content-center align-items-center w-100 ${spin ? "":"d-none"}`}>
         <div className="spinner-border text-danger" role="status"></div>
       </div>
@@ -60,7 +60,7 @@ export default function Friends() {
           <div className="row">
             {console.log("friends = =",friends)}
             {friends.map((friend) => {
-              const { image, name, surname, birth, age, sex, city, province, description, _id } = friend;
+              const { image, name, surname, birth, age, sex, city, province, description, msgBox, _id } = friend;
   
               return (
                 <UserCard
@@ -75,6 +75,7 @@ export default function Friends() {
                   city={city}
                   province={province}
                   description={description}
+                  msgBox={msgBox}
                 />
               );
             })}

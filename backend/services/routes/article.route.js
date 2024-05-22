@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import Article from '../models/article.model.js';
+import { authMidd } from '../authentication/index.js';
 
 export const articleRoute = Router();
 
-articleRoute.post("/new", async(req, res, next)=>{
+articleRoute.post("/new", authMidd, async(req, res, next)=>{
     try{
         let article = await Article.create({
             category: req.body.category,
@@ -21,7 +22,7 @@ articleRoute.post("/new", async(req, res, next)=>{
     }
 });
 
-articleRoute.get("/all", async(req, res, next)=>{
+articleRoute.get("/all", authMidd, async(req, res, next)=>{
     try{
         let articles = await Article.find();
         res.send(articles);
@@ -30,7 +31,7 @@ articleRoute.get("/all", async(req, res, next)=>{
     }
 });
 
-articleRoute.post("/category", async(req, res, next)=>{
+articleRoute.post("/category", authMidd, async(req, res, next)=>{
     console.log(req.body);
     try{
         const articles = await Article.find({category: req.body.category});

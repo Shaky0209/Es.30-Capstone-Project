@@ -111,3 +111,60 @@
 .navbar-space{
     height: 71px;
 }
+
+.navbar-space-resp{
+    height: 330px;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid orangered
+}
+
+.nav-btn-resp{
+    height: 50px;
+    width: 50px;
+    font-size: 16pt;
+    margin: 0 0 5px 5px;
+    border: 1px solid orangered;
+    border-radius: 5px;
+    color: orangered;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.brand-resp{
+    height: 18px;
+    font-size: 12pt;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background: linear-gradient(20deg, #009614, #ffffff, #ff0000);
+    background-size: cover;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-container-resp{
+    height: 30px;
+    margin: 5px 10px;
+    border: 1px solid rgb(0, 187, 34);
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.acc-btn-resp{
+    height: 50px;
+    width: 50px;
+    font-size: 25px;
+    color: rgb(0, 187, 34);
+    border: 1px solid rgb(0, 187, 34);
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.user-btn-resp{
+    height: 50px;
+    width: 50px;
+    color: rgb(0, 187, 34);
+    border: 2px solid rgb(0, 187, 34);
+    border-radius: 50%;
+}

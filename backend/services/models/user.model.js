@@ -50,6 +50,22 @@ const userSchema = new Schema(
             type:"String",
             require: false,
         },
+        msgBox:[
+            {
+                author:{
+                    type: Schema.Types.ObjectId,
+                    ref: "User",
+                },
+                msg:{
+                    type:"String",
+                    require: true,
+                },
+                posted:{
+                    type:"String",
+                    require: true,
+                }
+            },
+        ],
     },
     {
         collection:"users",

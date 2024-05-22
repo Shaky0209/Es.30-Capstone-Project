@@ -15,7 +15,7 @@ const options = {
     storage: new CloudinaryStorage({
         cloudinary,
         params:{
-            folder:"image"
+            folder:"user-img"
         }
     }),
 }
