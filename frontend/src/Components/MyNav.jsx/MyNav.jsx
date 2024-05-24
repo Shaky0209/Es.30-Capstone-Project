@@ -23,7 +23,7 @@ export default function MyNav() {
   const path = window.location.pathname;
   const {token, setToken} = useContext(TokenContext);
   const {user, setUser} = useContext(UserContext);
-  let params = new URLSearchParams(document.location.pathname);  
+  
 
   console.log("navbar user = ", user);
 
@@ -66,7 +66,7 @@ export default function MyNav() {
         setSlcFriends(true);
         setSlcMarket(false);
         break;
-      case path ==="/market":
+      case path ==="/articles":
         setSlcHome(false);
         setSlcFriends(false);
         setSlcMarket(true);
@@ -158,6 +158,9 @@ export default function MyNav() {
                 </Link>}
                 {!token && <Link to="/login" onClick={() => {setMenu(false);}} className="drop-link py-1">
                   Login
+                </Link>}
+                {token && <Link to="/my/articles" className="drop-link py-1">
+                    My Articles
                 </Link>}
                 {token && <Link to="/profile" className="drop-link py-1">
                     Profilo

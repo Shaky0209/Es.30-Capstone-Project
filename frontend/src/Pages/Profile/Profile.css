@@ -5,7 +5,6 @@
 
 .img{
     border-radius: 10px 10px 0 0;
-    margin-bottom: 10px;
 }
 
 .label{
@@ -22,4 +21,55 @@
 
 .mail{
     color: orange;
+}
+
+.img-cnt{
+    position: relative;
+}
+
+.edit-profile-img{
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    padding: 5px 10px;
+    color: rgb(0, 187, 34);
+    border-radius: 5px;
+    border: 1px solid rgb(0, 187, 34);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.pop-edit{
+    position: fixed;
+    height: 300px;
+    width: 500px;
+    top: calc((100vh - 300px)/2);
+    left: calc((100vw - 500px)/2);
+    border: 1px solid orangered;
+    border-radius: 10px;
+    background-color: rgb(255, 208, 170);
+    z-index: 100;
+    /* display: none; */
+}
+
+.pop-edit-top{
+    height: 40px;
+    border-radius: 10px 10px 0 0;
+    background-color: orange;
+}
+
+.edit-cls{
+    height: 30px;
+    width: 30px;
+    color: orangered;
+    border: 1px solid orangered;
+    border-radius: 5px;
+}
+
+.pop-label-top{
+    color: white;
+    text-shadow: 2px 2px orangered;
+}
+
+.edit-label{
+    color: orangered;
 }

@@ -34,18 +34,6 @@ const articleSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref:"User",
         },
-        comments:[
-            {
-                author:{
-                    type: Schema.Types.ObjectId,
-                    ref: "User",
-                },
-                description:{
-                    type:"String",
-                    require: true,
-                },
-            },
-        ]
     },
     {
         collection:"articles",

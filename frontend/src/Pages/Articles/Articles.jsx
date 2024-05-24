@@ -2,38 +2,48 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MenuContext } from '../../Context/MenuContextProvider';
 import { TokenContext } from '../../Context/TokenContextProvider';
+import { UserContext } from '../../Context/UserContextProvider';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/esm/Col';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import SingleArticle from '../../Components/SingleArticle/SingleArticle';
+
 import './Articles.css';
 
 export default function Articles() {
   
-  const {token} = useContext(TokenContext);
   const {setMenu} = useContext(MenuContext);
+  const {token, setToken} = useContext(TokenContext);
+  const {user, setUser} = useContext(UserContext);
   const [categoryType, setCategoryType] = useState("");
   const [title, setTitle] = useState("");
   const [articles, setArticles] = useState([]);
+  
   const navigate = useNavigate();
-
+  
   const getArticles = async()=>{
     try{
+      console.log("Token Articles = ", token);
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/all`, 
         {
           method:"GET",
-          header:{"Authorization":"Bearer " + token}
+          headers:{"Authorization":"Bearer " + token}
         })
 
         if(response.ok){
           let json = await response.json();
-          console.log("articles = ", json)
           setArticles(json);
+          console.log("articles = ", json)
           console.log("Fetch get all articles successful!");
         }else{
-          console.log(response);
-          console.log("token articles = ", token);
           console.log("Fetch get all articles failed!");
+          if(response.status === 401){
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            setToken("");
+            setUser("");
+          }
         }
       }catch(err){
         console.log(err);
@@ -75,7 +85,6 @@ export default function Articles() {
 
   useEffect(()=>{
     if(categoryType.length > 0){
-      console.log("///useEffect");
       getCategory();
     }else{
       getArticles();
@@ -84,7 +93,8 @@ export default function Articles() {
 
 
   return (
-    <Container fluid onClick={()=>setMenu(false)}>
+    <>
+    <Container fluid onClick={()=>setMenu(false)} className={`${token ? "" : "d-none"}`}>
       <Form>
         <Container fluid className='d-flex mb-4 w-100'>
           <div className='form-slc d-flex flex-column align-items-center'>
@@ -130,7 +140,7 @@ export default function Articles() {
                   city={city}
                   province={province}
                   contact={contact}
-                  user={user}
+                  userId={user}
                   id={_id}
                   posted={createdAt}
                 />
@@ -140,5 +150,18 @@ export default function Articles() {
         </Row>
       </Container>
     </Container>
+    <Container>
+      <Row>
+        <Col xs={12} className={`${token ? "d-none":""}`}>
+          <div className="friends-unlgd-cnt d-flex justify-content-center align-items-center">
+            <div className="my-alert d-flex align-items-center px-md-5">
+              <h3 className="text-center">Per Accedere ai contenuti devi essere registrato ed effettuare il login.</h3>
+            </div>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+    <div className="article-btm-spc"></div>
+    </>
   )
 }

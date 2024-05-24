@@ -1,3 +1,31 @@
 body{
     background-color: rgb(255, 208, 170) !important;
 }
+
+.left-cnt{
+    border: 1px solid orangered;
+    border-radius: 10px;
+    background: rgb(255, 208, 170);
+}
+
+.wall{
+    position: fixed;
+    top: 75px;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-image: url("https://tse2.mm.bing.net/th?id=OIP.eNSDsH5ia3vwIJ37VIauRAHaEF&pid=Api");
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.wall-title{
+    color: orangered;
+}
+
+.post-add{
+    font-style: italic;
+    color: blue;
+    border: none;
+    background-color: transparent;
+}

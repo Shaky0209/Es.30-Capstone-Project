@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import Article from '../models/article.model.js';
 import { authMidd } from '../authentication/index.js';
+import Article from '../models/article.model.js';
 
 export const articleRoute = Router();
 
@@ -40,3 +40,21 @@ articleRoute.post("/category", authMidd, async(req, res, next)=>{
         next(err);
     }
 });
+
+articleRoute.get("/my/:id", authMidd, async(req, res, next)=>{
+    try{
+        const myArticles = await Article.find({user: req.params.id});
+        res.send(myArticles);
+    }catch(err){
+        next(err);
+    }
+});
+
+articleRoute.get("/get/:id", authMidd, async(req, res, next)=>{
+    try{
+        let article = await Article.findById(req.params.id);
+        res.send(article);
+    }catch(err){
+        next(err)
+    }
+})

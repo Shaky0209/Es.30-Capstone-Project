@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { userRoute } from './services/routes/user.route.js';
 import { articleRoute } from './services/routes/article.route.js';
+import { wallRoute } from './services/routes/wall.route.js';
 import cors from 'cors';
 import express from 'express';
 import passport from 'passport';
@@ -18,6 +19,7 @@ app.use(express.json());
 passport.use("google", googleStrategy);
 app.use("/user", userRoute );
 app.use("/articles", articleRoute);
+app.use("/wall", wallRoute);
 
 const initServer = async()=>{
     try{

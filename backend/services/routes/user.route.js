@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { generateJWT, authMidd, authMiddMe} from '../authentication/index.js';
+import { generateJWT, authMidd} from '../authentication/index.js';
 import cloudUserMidd from '../middleware/multerUser.js';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
@@ -9,11 +9,18 @@ export const userRoute = Router();
 
 userRoute.post("/register", async(req, res, next)=>{
     try{
-        let user = await User.create({
-            ...req.body,
-            password: await bcrypt.hash(req.body.password, 11),
-        });
-        res.send(user);
+        let  registered = await User.find({email: req.body.email});
+        
+        if(registered.lenght > 0){
+            // res.send("This email already exists in the database.").sendStatus(600);
+            res.status(600).send("This e-mail already exists in the database.");
+        }else{
+            let user = await User.create({
+                ...req.body,
+                password: await bcrypt.hash(req.body.password, 11),
+            });
+            res.send(user);
+        }
     }catch(err){
         next(err);
     }
@@ -40,7 +47,7 @@ userRoute.post("/login", async(req, res, next)=>{
     }
 });
 
-userRoute.get("/me", authMiddMe, async(req, res, next)=>{
+userRoute.get("/me", authMidd, async(req, res, next)=>{
     try{
         let user = await User.findById(req.user.id);
         res.send(user)
@@ -97,68 +104,101 @@ userRoute.put("/edit/:id", authMidd, async(req, res, next)=>{
     }
 });
 
-userRoute.post("/avanced/src", authMidd, async(req, res, next)=>{
+userRoute.post("/avanced/src", async(req, res, next)=>{
+    try{
+        const sex = req.body.sex;
+        const province = req.body.province;
+        const city = req.body.city;
+        const ageMin = req.body.ageMin;
+        const ageMax = req.body.ageMax;
 
-    let age = req.body.ageMin || false;
-    let sex = req.body.sex || false;
-    let city = req.body.city || false;
-    let province = req.body.province || false;
+        const filter = {};
 
-    try{  
-        if(age && sex && city && province){
-            let users = await User.find({age: age, sex: sex, city: city, province: province,});
-            res.send(users);
-        }else if(age && sex && city){
-            let users = await User.find({age: age, sex: sex, city: city});
-            res.send(users);
-        }else if(age && sex && province){
-            let users = await User.find({age: age, sex: sex, province: province,});
-            res.send(users);
-        }else if(age && city && province){
-            let users = await User.find({age: age, city: city, province: province,});
-            res.send(users);
-        }else if(sex && city && province){
-            let users = await User.find({sex: sex, city: city, province: province,});
-            res.send(users);
-        }else if(age && sex){            
-            let users = await User.find({age: age, sex: sex});
-            res.send(users);
-        }else if (age && city){
-            let users = await User.find({age: age, city: city});
-            res.send(users);
-        }else if(age && province){
-            let users = await User.find({age: age, province: province,});
-            res.send(users);
-        }else if(sex && city){
-            let users = await User.find({sex: sex, city: city});
-            res.send(users);
-        }else if(sex && province){
-            let users = await User.find({sex: sex, province: province,});
-            res.send(users);
-        }else if(city && province){
-            let users = await User.find({city: city, province: province,});
-            res.send(users);
-        }else if(age){
-            let users = await User.find({age: age});       
-            res.send(users);         
-        }else if(sex){
-            let users = await User.find({sex: sex});
-            res.send(users);
-        }else if(city){
-            let users = await User.find({city: city});
-            res.send(users);
-        }else if(province){
-            let users = await User.find({province: province});
-            res.send(users);
-        }else{
-            let users = await User.find();
-            res.send(users);
+        if(sex){
+            filter.sex = sex;
+        }
+
+        if(province){
+            filter.province = province;
+        }
+
+        if(city){
+            filter.city = city;
+        }
+
+        if(ageMin && ageMax){
+            filter.age = {$and:[{age:{$gte: ageMin}}, {age:{$lte: ageMax}}]}
         }
         
+        let users = await User.find(filter)
+        res.send(users);
     }catch(err){
         next(err);
     }
 });
+
+// userRoute.post("/avanced/src", authMidd, async(req, res, next)=>{
+
+//     let age = req.body.ageMin || false;
+//     let sex = req.body.sex || false;
+//     let city = req.body.city || false;
+//     let province = req.body.province || false;
+
+//     try{  
+//         if(age && sex && city && province){
+//             let users = await User.find({age: age, sex: sex, city: city, province: province,});
+//             res.send(users);
+//         }else if(age && sex && city){
+//             let users = await User.find({age: age, sex: sex, city: city});
+//             res.send(users);
+//         }else if(age && sex && province){
+//             let users = await User.find({age: age, sex: sex, province: province,});
+//             res.send(users);
+//         }else if(age && city && province){
+//             let users = await User.find({age: age, city: city, province: province,});
+//             res.send(users);
+//         }else if(sex && city && province){
+//             let users = await User.find({sex: sex, city: city, province: province,});
+//             res.send(users);
+//         }else if(age && sex){            
+//             let users = await User.find({age: age, sex: sex});
+//             res.send(users);
+//         }else if (age && city){
+//             let users = await User.find({age: age, city: city});
+//             res.send(users);
+//         }else if(age && province){
+//             let users = await User.find({age: age, province: province,});
+//             res.send(users);
+//         }else if(sex && city){
+//             let users = await User.find({sex: sex, city: city});
+//             res.send(users);
+//         }else if(sex && province){
+//             let users = await User.find({sex: sex, province: province,});
+//             res.send(users);
+//         }else if(city && province){
+//             let users = await User.find({city: city, province: province,});
+//             res.send(users);
+//         }else if(age){
+//             let users = await User.find({age: age});       
+//             res.send(users);         
+//         }else if(sex){
+//             let users = await User.find({sex: sex});
+//             res.send(users);
+//         }else if(city){
+//             let users = await User.find({city: city});
+//             res.send(users);
+//         }else if(province){
+//             let users = await User.find({province: province});
+//             res.send(users);
+//         }else{
+//             let users = await User.find();
+//             res.send(users);
+//         }
+        
+//     }catch(err){
+//         next(err);
+//     }
+// });
 
 userRoute.patch("/:id/user-img", cloudUserMidd, async(req, res, next)=>{
     try{
@@ -208,3 +248,7 @@ userRoute.delete("/message/delete/:msgId/:userId", async(req, res, next)=>{
         next(err);
     }
 });
+
+// userRoute.patch("/edit/img/:id" async(req, res, next)=>{
+
+// });

@@ -10,8 +10,8 @@ export default function FriendsAvancedSrc({setFriends}) {
   const [sex, setSex] = useState("");
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
-  const [ageMin, setAgeMin] = useState("");
-  const [ageMax, setAgeMax] = useState("");
+  const [ageMin, setAgeMin] = useState();
+  const [ageMax, setAgeMax] = useState();
   const {token, setToken} = useContext(TokenContext)
   const type = "submit";
   const label = "Cerca";
@@ -23,8 +23,8 @@ export default function FriendsAvancedSrc({setFriends}) {
       sex: sex,
       city: city,
       province: province,
-      ageMin: ageMin,
-      ageMax: ageMax,
+      ageMin: Number(ageMin),
+      ageMax: Number(ageMax),
     }
     
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/avanced/src`,

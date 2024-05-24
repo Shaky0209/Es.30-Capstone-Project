@@ -174,8 +174,9 @@ export default function BoxMessage({author, msg, msgId, refresh, posted}) {
                 <h4 className='sure'>Sei sicuro di voler cancellare il messaggio?</h4>
             </Alert>
         </div>
-        <div className='d-flex justify-content-center pt-3'>
-            <button className='msg-btn' onClick={()=>deleteMsg()}>Si</button><button className='msg-btn' onClick={()=>setPopDel(false)}>No</button>
+        <div className='btm-del d-flex justify-content-center pt-3'>
+            <button className='msg-btn' onClick={()=>deleteMsg()}>Si</button>
+            <button className='msg-btn' onClick={()=>setPopDel(false)}>No</button>
         </div>
     </div>
 
@@ -193,7 +194,7 @@ export default function BoxMessage({author, msg, msgId, refresh, posted}) {
             <div className='d-flex justify-content-between align-items-end pt-3'>
                 <div>
                     <button className='msg-btn' onClick={()=>setPopMsg(true)}>Rispondi</button>
-                    <button className='msg-btn' onClick={()=>setPopDel(true)}>Elimina</button>
+                    <button className='msg-btn mt-1' onClick={()=>setPopDel(true)}>Elimina</button>
                 </div>
                 <span className="posted me-2">Inviato: {posted}</span>
             </div>

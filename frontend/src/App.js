@@ -5,6 +5,8 @@ import Register from "./Pages/Register/Register.jsx";
 import Login from "./Pages/Login/Login.jsx";
 import Friends from "./Pages/Friends/Friends.jsx";
 import Articles from "./Pages/Articles/Articles.jsx";
+import ArticlesEdit from "./Pages/ArticlesEdit/ArticlesEdit.jsx";
+import MyArticles from "./Pages/MyArticles/MyArticles.jsx";
 import MyFooter from "./Components/MyFooter/MyFooter.jsx";
 import Profile from "./Pages/Profile/Profile.jsx";
 import NewArticle from "./Pages/NewArticle/NewArticle.jsx";
@@ -29,6 +31,8 @@ export default function App() {
               <Route path="/articles" element={<Articles />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/articles/new" element={<NewArticle />} />
+              <Route path="/my/articles" element={<MyArticles />} />
+              <Route path="/articles/edit/" element={<ArticlesEdit />} />
               <Route path="/*" element={<NotFound />} />
             </Routes>
             <MyFooter />

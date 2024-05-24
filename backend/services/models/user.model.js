@@ -17,13 +17,14 @@ const userSchema = new Schema(
         email: {
             type:"String",
             require: true,
+            unique:true,
         },
         birth: {
             type:"String",
             require: true,
         },
         age: {
-            type:"String",
+            type:"Number",
             require: true,
         },
         sex: {

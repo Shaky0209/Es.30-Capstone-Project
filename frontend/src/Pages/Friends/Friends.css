@@ -11,6 +11,19 @@
     position: relative;
 }
 
+.my-alert{
+    height: 300px;
+    width: 500px;
+    color: orangered;
+    border: 1px solid orangered;
+    border-radius: 10px;
+    background-color: rgba(255, 166, 0, 0.4);
+}
+
+.friends-unlgd-cnt{
+    height: 80vh;
+}
+
 @media screen and (max-width: 576px){
 
     .search-cnt{

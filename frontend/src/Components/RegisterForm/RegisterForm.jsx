@@ -28,9 +28,8 @@ export default function RegisterForm() {
 
     const updateUserImg = async(id)=>{
 
-        const body = new FormData();
+        let body = new FormData();
         body.append('image', img);
-        // console.log(`${process.evn.REACT_APP_SERVER_URL}/${email}/user-img`);
         try{
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/${id}/user-img`,
                 {
@@ -47,7 +46,6 @@ export default function RegisterForm() {
             }else{
                 console.log("Fetch ImgUpdate failed!");
             }
-            
         }catch(err){
             console.log(err);
         }
@@ -88,7 +86,10 @@ export default function RegisterForm() {
                         headers:{"Content-type":"application/json;charset=UTF-8"}
                     }
                 )
-                if(response.ok){
+                
+                if(response.status === 600){
+                    alert("Attenzione! Questo indirizzo e-mail è già registrato nel database!");
+                }else if(response.ok){
                     let json = await response.json();
                     console.log("register response = ", json);
                     if(img){

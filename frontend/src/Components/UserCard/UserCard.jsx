@@ -64,7 +64,7 @@ export default function UserCard({image, name, surname, sex, birth, age, city, p
             setMessage("");
           }}>
             X
-          </button>
+        </button>
       </div>
       <div className='d-flex flex-column align-items-center'>
         <h5 className='pop-up-title text-center'>Scrivi il tuo messaggio:</h5>
