@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { TokenContext } from '../../Context/TokenContextProvider';
+import { UserContext } from '../../Context/UserContextProvider';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import UniButton from '../UniButton/UniButton';
@@ -6,6 +9,8 @@ import './NewArticleForm.css';
 
 export default function NewArticleForm() {
 
+    const {user} = useContext(UserContext);
+    const {token} = useContext(TokenContext);
     const [category, setCategory]= useState("");
     const [title, setTitle] = useState("");
     const [img, setImg] = useState("");
@@ -13,8 +18,7 @@ export default function NewArticleForm() {
     const [city, setCity] = useState("");
     const [province, setProvince] = useState("");
     const [contact, setContact] = useState("");
-    let user = localStorage.getItem("user");
-    let token = localStorage.getItem("token");
+    const navigate = useNavigate();
     const type = "submit"
     const label = "Invia"
 
@@ -44,7 +48,8 @@ export default function NewArticleForm() {
                 console.log("Fetch article succesful!");
                 let json = await response.json();
                 console.log("body article2 = ", json)
-                alert("Il tuo articolo è stato inserito correttamente");
+                alert("Il tuo articolo è stato inserito correttamente, verrai reindirizzato alla pagina articoli");
+                navigate("/articles");
             }else{
                 console.log("Fetch article failed!");
             }

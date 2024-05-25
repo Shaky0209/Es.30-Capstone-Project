@@ -25,6 +25,7 @@ body{
 
 .post-add{
     font-style: italic;
+    text-decoration: underline;
     color: blue;
     border: none;
     background-color: transparent;

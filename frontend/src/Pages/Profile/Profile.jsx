@@ -4,6 +4,8 @@ import { UserContext } from '../../Context/UserContextProvider.jsx';
 import { MenuContext } from '../../Context/MenuContextProvider.jsx';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import { ImgContext } from '../../Context/ImgContextProvider.jsx';
 import Col from 'react-bootstrap/esm/Col';
 import Row from 'react-bootstrap/esm/Row';
 import Form from 'react-bootstrap/esm/Form';
@@ -15,6 +17,7 @@ import './Profile.css';
 
 export default function Profile() {
 
+  const {avatar, setAvatar} = useContext(ImgContext);
   const {token} = useContext(TokenContext);
   const {user} = useContext(UserContext);
   const {setMenu} = useContext(MenuContext);
@@ -32,6 +35,7 @@ export default function Profile() {
   const [edit, setEdit] = useState(false);
   const [imgEdit, setImgEdit] = useState("");
 
+  const navigate = useNavigate();
   const label = "Modifica";
   const type = "button";
   const label2 = "Invia";
@@ -50,6 +54,7 @@ export default function Profile() {
 
         let json = await response.json();
 
+        setAvatar(json.image);
         setImg(json.image);
         setName(json.name);
         setSurname(json.surname);
@@ -87,7 +92,12 @@ export default function Profile() {
       )
 
       if(response.ok){
+        let json = await response.json();
+        localStorage.setItem("avatar", json.image);
+        setAvatar(json.image)
+        console.log("avatar = ", json);
         console.log("Fetch edit image successful!");
+        
         setEdit(false);
         getUserProfile();
       }else{
@@ -139,7 +149,7 @@ export default function Profile() {
               <p><b className='label pe-2'>e-mail:</b> {email}</p>
               <p><b className='label pe-2'>Descrizione:</b> {description}</p>
             </div>
-            <UniButton label={label} type={type}  />
+            <UniButton label={label} type={type} fnc={()=>navigate("/profile/edit")} />
           </div>
         </Col>
         <Col xs={12} md={7} className='mt-5 mt-md-0'>

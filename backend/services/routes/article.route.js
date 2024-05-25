@@ -32,7 +32,6 @@ articleRoute.get("/all", authMidd, async(req, res, next)=>{
 });
 
 articleRoute.post("/category", authMidd, async(req, res, next)=>{
-    console.log(req.body);
     try{
         const articles = await Article.find({category: req.body.category});
         res.send(articles);
@@ -57,4 +56,34 @@ articleRoute.get("/get/:id", authMidd, async(req, res, next)=>{
     }catch(err){
         next(err)
     }
-})
+});
+
+articleRoute.delete("/delete/:id", async(req, res, next)=>{
+    try{
+        let article = await Article.findByIdAndDelete(req.params.id);
+        res.sendStatus(204);
+    }catch(err){
+        next(err);
+    }
+});
+
+articleRoute.put("/edit/:id", authMidd, async(req, res, next)=>{
+    try{
+        let newArticle = Article.findByIdAndUpdate(req.params.id, req.body,
+            // {
+            //     category: req.body.category,
+            //     title: req.body.title,
+            //     description: req.body.description,
+            //     city: req.body.city,
+            //     province: req.body.province,
+            //     contact: req.body.contact,
+            //     user: req.body.user,
+            // },
+            {
+                new: true,
+            });
+        res.send(newArticle);
+    }catch(err){
+        next(err);
+    }
+});

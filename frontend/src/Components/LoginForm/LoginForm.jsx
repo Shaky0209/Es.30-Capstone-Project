@@ -50,7 +50,6 @@ export default function LoginForm() {
     };
     
     const googleLogIn = (event)=>{   
-        console.log("google login");
         event.preventDefault();
         const link = process.env.REACT_APP_URL_G_LOGIN;
         window.open(link, "_self");

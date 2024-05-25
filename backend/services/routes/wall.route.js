@@ -21,3 +21,23 @@ wallRoute.post("/attach/:id", async(req, res, next)=>{
         next(err);
     };
 });
+
+wallRoute.get("/posts/:id", async(req, res, next)=>{
+    try{
+        let wall = await Wall.findById(req.params.id);
+        res.send(wall);
+
+    }catch(err){
+        next(err);
+    }
+});
+
+wallRoute.get("/post/:id", async(req, res, next)=>{
+    try{
+        let post = await Post.findById(req.params.id);
+        // post.populate("post");
+        res.send(post);
+    }catch(err){
+        next(err);
+    }
+});

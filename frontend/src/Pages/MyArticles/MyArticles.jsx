@@ -1,15 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { TokenContext } from '../../Context/TokenContextProvider';
 import { UserContext } from '../../Context/UserContextProvider';
-import Container from 'react-bootstrap/esm/Container';
+import { MenuContext } from '../../Context/MenuContextProvider';
 import Row from 'react-bootstrap/esm/Row';
+import Container from 'react-bootstrap/esm/Container';
 import SingleArticle from '../../Components/SingleArticle/SingleArticle';
+import './MyArticles.css';
 
 export default function MyArticles() {
 
     const {token} = useContext(TokenContext);
     const {user} = useContext(UserContext);
     const [articles, setArticles] = useState([]);
+    const [noArticles, setNoArticles] = useState(false)
+    const {setMenu} = useContext(MenuContext);
 
     const getMyArticles = async()=>{
         try{
@@ -21,6 +25,12 @@ export default function MyArticles() {
             )
             if(response.ok){
                 let json = await response.json();
+                if(json.length < 1){
+                    setNoArticles(true);
+                }else{
+                    setNoArticles(false);
+                }
+                    
                 setArticles(json);
                 console.log("Fetch get my articles successful!");
             }else{
@@ -35,11 +45,14 @@ export default function MyArticles() {
         getMyArticles();
     }, []);
   return (
-    <Container>
+    <Container onClick={()=>setMenu(false)}>
+        <div className={`no-articles d-flex justify-content-center align-items-center ${noArticles ? "":"d-none"}`}>
+            <h3>Non hai articoli pubblicati in questo momento.</h3>
+        </div>
         <Row>
             {articles.map((article)=>{
 
-                const {img, category, title, description, city, province, contact, user, createdAt, _id}= article;
+                const {img, category, title, description, city, province, contact, user, createdAt, _id, }= article;
 
                 return <SingleArticle
                             key={_id}
@@ -53,9 +66,11 @@ export default function MyArticles() {
                             userId={user}
                             id={_id}
                             posted={createdAt}
+                            refresh={()=>getMyArticles()}
                         />
             })}
         </Row>
+        <div className='bottom-spc-myArticles'></div>
     </Container>
   )
 }

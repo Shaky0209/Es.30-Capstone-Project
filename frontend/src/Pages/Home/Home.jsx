@@ -1,18 +1,24 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {MenuContext} from '../../Context/MenuContextProvider.jsx';
 import {TokenContext} from '../../Context/TokenContextProvider.jsx';
 import {UserContext} from '../../Context/UserContextProvider.jsx'
+import { ImgContext } from '../../Context/ImgContextProvider.jsx';
 import Row from 'react-bootstrap/esm/Row.js';
 import Col from 'react-bootstrap/esm/Col.js';
 import Container from 'react-bootstrap/esm/Container.js';
 import Image from 'react-bootstrap/Image';
+import WallPost from '../../Components/WallPost/WallPost.jsx';
 import './Home.css';
 
 
 export default function Home() {
+
   const {user, setUser} = useContext(UserContext)
   const {token, setToken} = useContext(TokenContext);
   const {setMenu} = useContext(MenuContext);
+  const {avatar, setAvatar} = useContext(ImgContext);
+  const [posts, setPosts] = useState([]);
+
   let params = new URLSearchParams(document.location.search);
   let accToken = params.get("accToken");
   
@@ -21,7 +27,7 @@ export default function Home() {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/me`,
         {
           method:"GET",
-          headers:{"Authorization":"Bearer " + token,"Content-type":"application/json;charset=UTF-8"},
+          headers:{"Authorization":"Bearer " + token},
         })
         
         if(response.ok){
@@ -29,6 +35,8 @@ export default function Home() {
           console.log("User fetch successful!");
           console.log("home GoogleUser = ", json);
           localStorage.setItem("user", json._id);
+          localStorage.setItem("avatar", json.image)
+          setAvatar(json.image);
           setUser(json._id);
         }else{
           console.log(response);
@@ -37,9 +45,30 @@ export default function Home() {
       }catch(err){
         console.error(err);
       }
-    }
+    };
     
-    
+    const getPosts = async()=>{
+      try{
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/wall/posts/${process.env.REACT_APP_WALL_ID}`, 
+          {
+            method:"GET",
+            headers:{"Authorization":"Bearer " + token}
+          }
+        )
+
+        if(response.ok){
+          let json = await response.json();
+          setPosts(json.posts);
+          console.log("posts = ", json.posts);
+          console.log("Fetch get Articles successful!");
+        }else{
+          console.log("Fetch get Articles failed!");
+        }
+      }catch(err){
+        console.log(err);
+      }
+    };
+
     if(accToken){
       console.log("is accToken")
       fetchGetMe();
@@ -49,14 +78,15 @@ export default function Home() {
     }else{
       setToken(localStorage.getItem("token"));
       setUser(localStorage.getItem("user"));
-    }
+    };
+
+    useEffect(()=>{
+      getPosts();
+    }, []);
     
-    
-    console.log("token = ", token);
-    console.log("user = ", user);
     
     return (
-      <Container fluid onClick={()=>setMenu(false)} className=''>
+      <Container fluid onClick={()=>setMenu(false)} >
         <Row>
           <Col xs={12} sm={3} lg={2} className='order-1 order-sm-0 pt-4'>
             <div className='left-cnt'>
@@ -82,8 +112,18 @@ export default function Home() {
           <Col xs={12} sm={9} lg={10} className={`wallorder-0 order-sm-1 ${token ? "":"d-none"}`}>
             <div className='wall'></div>
             <div className='d-flex flex-column align-items-center'>
-              <h2 className='wall-title text-center pt-3'>Il Muretto di Fabriano</h2>
+              <h2 className='wall-title text-center pt-3'>Il "Muretto" di Fabriano</h2>
+              <img style={{height:"50px"}} src="https://tse4.mm.bing.net/th?id=OIP.yI-5NnPHpyUsjuyE1CjeCQAAAA&pid=Api" alt="stemma" />
               <button className='post-add' type='button'>Inserisci un Post</button>
+            </div>
+            <div>
+              {posts && posts.map((post, index)=>{
+                console.log("single post map = ", post);
+                return(
+                  // <div key={index}>{post}</div>
+                  <WallPost key={index} postId={post} />
+                )
+              })}
             </div>
 
           </Col>

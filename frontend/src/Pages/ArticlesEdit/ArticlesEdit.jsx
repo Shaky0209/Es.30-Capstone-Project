@@ -4,17 +4,20 @@ import { MenuContext } from '../../Context/MenuContextProvider';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/esm/Container';
 import UniButton from '../../Components/UniButton/UniButton';
+import { UserContext } from '../../Context/UserContextProvider';
 
 export default function ArticlesEdit() {
 
     const {token} = useContext(TokenContext);
-    const {setMemu} = useContext(MenuContext)
+    const {user} = useContext(UserContext);
+    const {setMenu} = useContext(MenuContext)
 
     const [category, setCategory] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
+    const [contact, setContact] = useState("");
 
     const params = new URLSearchParams(document.location.search);
     const _id = params.get("artId");
@@ -38,6 +41,7 @@ export default function ArticlesEdit() {
                 setDescription(json.description);
                 setProvince(json.province);
                 setCity(json.city);
+                setContact(json.contact);
                 console.log("Fetch get Article Edit successful!");
             }else{
                 console.log("Fetch get Article Edit failed!");
@@ -46,14 +50,54 @@ export default function ArticlesEdit() {
             console.log(err);
         }
     }
+
+    const editArticle = async(event)=>{
+        event.preventDefault()
+
+        try{
+            const body = {
+                category: category,
+                title: title,
+                description: description,
+                city: city.toUpperCase(),
+                province: province.toUpperCase(),
+                contact: contact,
+                user: user,
+            }
+        
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/edit/${_id}`, 
+                {
+                    method:"PUT",
+                    body: JSON.stringify(body),
+                    headers: {"Content-Type":"application/json", "Authorization":"Bearer " + token},
+                }
+            )
+            if(response.ok){
+                console.log("Fetch edit article successful!");
+                alert("Il tuo articolo è stato modificato correttamente.")
+            }else{
+                console.log("Fetch edit article failed!");
+                alert("Si è verificato un errore durante la modifica, Il tuo articolo non è stato modificato.")
+            }
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+
+
     useEffect(()=>{
         getArticleEdit();
     }, []);
 
+    useEffect(()=>{
+        console.log(province);
+    }, [province]);
+
   return (
-    <Container onClick={()=>setMemu(false)} className='mb-5 pb-5'>
+    <Container onClick={()=>setMenu(false)} className='mb-5 pb-5'>
         <h3 className='text-center py-5'>Modifica Articolo:</h3>
-        <Form onSubmit={()=>{}}>
+        <Form onSubmit={(event)=>editArticle(event)}>
             <Form.Group className="mb-3">
                 <Form.Control
                     type="text"
@@ -67,7 +111,7 @@ export default function ArticlesEdit() {
                     type="text"
                     className='text-center'
                     value={category}
-                    onChange={setCategory}
+                    readOnly
                 />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -75,7 +119,7 @@ export default function ArticlesEdit() {
                     type="text"
                     className='text-center'
                     value={title}
-                    onChange={setTitle}
+                    onChange={(event)=>setTitle(event.target.value)}
                 />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -83,7 +127,7 @@ export default function ArticlesEdit() {
                     type="text"
                     className='text-center'
                     value={province}
-                    onChange={setProvince}
+                    onChange={(event)=>setProvince(event.target.value)}
                 />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -91,7 +135,15 @@ export default function ArticlesEdit() {
                     type="text"
                     className='text-center'
                     value={city}
-                    onChange={setCity}
+                    onChange={(event)=>setCity(event.target.value)}
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control
+                    type="text"
+                    className='text-center'
+                    value={contact}
+                    onChange={(event)=>setContact(event.target.value)}
                 />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -100,7 +152,7 @@ export default function ArticlesEdit() {
                     rows={3}
                     className='text-center'
                     value={description}
-                    onChange={setDescription}
+                    onChange={(event)=>setDescription(event.target.value)}
                 />
             </Form.Group>
             <UniButton type={type} label={label} />

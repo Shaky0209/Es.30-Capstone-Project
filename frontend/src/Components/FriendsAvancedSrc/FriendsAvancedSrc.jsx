@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { TokenContext } from '../../Context/TokenContextProvider.jsx';
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
-import UniButton from "../UniButton/UniButton";
+import UniButton from "../UniButton/UniButton.jsx";
 import "./FriendsAvancedSrc.css";
 
 export default function FriendsAvancedSrc({setFriends}) {
@@ -47,7 +47,7 @@ export default function FriendsAvancedSrc({setFriends}) {
   
 
   return (
-    <Container fluid className="form-src-cnt d-flex flex-column align-items-center py-3">
+    <Container fluid className="form-src-cnt d-flex flex-column align-items-center zIndex py-3">
       <h4 className="text-center">Ricerca Avanzata</h4>
       <Form onSubmit={(event)=>avancedSrc(event)} className="px-2">
         <Form.Control

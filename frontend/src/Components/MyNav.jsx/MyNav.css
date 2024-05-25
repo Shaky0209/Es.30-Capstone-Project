@@ -168,3 +168,60 @@
     border: 2px solid rgb(0, 187, 34);
     border-radius: 50%;
 }
+
+.open-menu{
+    position: fixed;
+    width: 100%;
+    background-color: rgb(255, 208, 170);
+    z-index: 99;
+}
+
+.drop-menu-resp{
+    position: absolute;
+    width: 100px;
+    bottom: 0px;
+    left: 65px;
+    background-color: rgba(255, 181, 149, 0.857);
+    border: 1px solid rgb(158, 158, 158);
+    border-radius: 5px;
+    z-index: 100;
+}
+
+.burger-btn{
+    position: relative;
+    height: 39px;
+    width: 45px;
+    padding: 6px;
+    border: 1px solid rgb(0, 187, 34);
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.btn-row.top, .btn-row.center, .btn-row.down{
+    position: absolute;
+    width: 30px;
+    height: 3px;
+    background-color:  rgb(0, 187, 34);
+}
+
+.btn-row.top{
+    top: 5px;
+}
+
+.btn-row.center{
+    top: 16px;
+}
+
+.btn-row.down{
+    bottom: 7px;
+}
+
+.rotate-right{
+    transform: rotate(45deg) translate(9px, 9px);
+
+}
+
+.rotate-left{
+    transform: rotate(-45deg) translate(7px, -6px);
+    
+}

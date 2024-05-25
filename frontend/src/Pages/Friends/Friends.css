@@ -8,7 +8,7 @@
 }
 
 .friends-page{
-    position: relative;
+    /* position: relative; */
 }
 
 .my-alert{
@@ -22,6 +22,11 @@
 
 .friends-unlgd-cnt{
     height: 80vh;
+    z-index: 0;
+}
+
+.zIndex{
+    z-index: -1 !important;
 }
 
 @media screen and (max-width: 576px){
