@@ -20,3 +20,23 @@
     background-color: transparent;
     padding-top: 10px;
 }
+
+.art-img-cont{
+    position: relative;
+}
+
+.art-img-edit{
+    position: absolute;
+    font-size: 12pt;
+    bottom: 2px;
+    right: 3px;
+    padding: 3px 8px;
+    color: rgb(0, 187, 34);
+    border: 1px solid rgb(0, 187, 34);
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+.delete{
+    z-index: 99;
+}

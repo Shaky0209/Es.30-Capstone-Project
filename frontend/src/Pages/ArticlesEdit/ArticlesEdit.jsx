@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { UserContext } from '../../Context/UserContextProvider';
 import { TokenContext } from '../../Context/TokenContextProvider';
 import { MenuContext } from '../../Context/MenuContextProvider';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/esm/Container';
 import UniButton from '../../Components/UniButton/UniButton';
-import { UserContext } from '../../Context/UserContextProvider';
+import { useNavigate } from 'react-router-dom';
 
 export default function ArticlesEdit() {
 
@@ -21,6 +22,7 @@ export default function ArticlesEdit() {
 
     const params = new URLSearchParams(document.location.search);
     const _id = params.get("artId");
+    const navitate = useNavigate();
 
     const label = "Invia Modifica";
     const type = "submit";
@@ -55,7 +57,7 @@ export default function ArticlesEdit() {
         event.preventDefault()
 
         try{
-            const body = {
+            let body = {
                 category: category,
                 title: title,
                 description: description,
@@ -69,12 +71,13 @@ export default function ArticlesEdit() {
                 {
                     method:"PUT",
                     body: JSON.stringify(body),
-                    headers: {"Content-Type":"application/json", "Authorization":"Bearer " + token},
+                    headers: {"Authorization":"Bearer " + token, "Content-Type":"application/json"},
                 }
             )
             if(response.ok){
                 console.log("Fetch edit article successful!");
-                alert("Il tuo articolo è stato modificato correttamente.")
+                alert("Il tuo articolo è stato modificato correttamente, verrai reindirizzato alla pagina articoli.")
+                navitate("/articles")
             }else{
                 console.log("Fetch edit article failed!");
                 alert("Si è verificato un errore durante la modifica, Il tuo articolo non è stato modificato.")
@@ -84,8 +87,7 @@ export default function ArticlesEdit() {
         }
     }
 
-
-
+    
     useEffect(()=>{
         getArticleEdit();
     }, []);

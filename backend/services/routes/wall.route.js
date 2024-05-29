@@ -16,7 +16,6 @@ wallRoute.post("/attach/:id", async(req, res, next)=>{
                 res.send(wall);
             }
         }
-        
     }catch(err){
         next(err);
     };
@@ -25,17 +24,19 @@ wallRoute.post("/attach/:id", async(req, res, next)=>{
 wallRoute.get("/posts/:id", async(req, res, next)=>{
     try{
         let wall = await Wall.findById(req.params.id);
+        // wall.populate("posts");
         res.send(wall);
-
     }catch(err){
         next(err);
     }
 });
 
-wallRoute.get("/post/:id", async(req, res, next)=>{
+wallRoute.get("/all/:id/:postId", async(req, res, next)=>{
     try{
-        let post = await Post.findById(req.params.id);
-        // post.populate("post");
+        let wall = await Wall.findById(req.params.id);
+        let posts = wall.posts;
+        let post = posts.filter((el)=>{return el._id == req.params.postId})
+        // wall.populate("posts");
         res.send(post);
     }catch(err){
         next(err);

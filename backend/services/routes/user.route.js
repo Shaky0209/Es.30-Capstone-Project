@@ -112,23 +112,27 @@ userRoute.post("/avanced/src", async(req, res, next)=>{
         const ageMin = req.body.ageMin;
         const ageMax = req.body.ageMax;
 
-        const filter = {};
+        const filter = {$and:[]};
 
         if(sex){
-            filter.sex = sex;
+            filter['$and'].push({sex:{$eq: sex}});
         }
 
         if(province){
-            filter.province = province;
+            filter['$and'].push({province:{$eq: province}});
         }
 
         if(city){
-            filter.city = city;
+            filter['$and'].push({city:{$eq: city}});
         }
 
-        if(ageMin && ageMax){
-            filter.age = {$and:[{age:{$gte: ageMin}}, {age:{$lte: ageMax}}]}
+        if(ageMin){
+            filter['$and'].push({age:{$gte: ageMin}});
         }
+
+        if(ageMax){
+            filter['$and'].push({age:{$lte: ageMax}});
+        }   
         
         let users = await User.find(filter)
         res.send(users);
@@ -139,12 +143,7 @@ userRoute.post("/avanced/src", async(req, res, next)=>{
 
 userRoute.patch("/:id/user-img", cloudUserMidd, async(req, res, next)=>{
     try{
-        let updatedUserImg = await User.findByIdAndUpdate(
-            req.params.id,
-            {image: req.file.path},
-            {new: true}
-        );
-
+        let updatedUserImg = await User.findByIdAndUpdate(req.params.id, {image: req.file.path},{new: true});
         res.send(updatedUserImg);
     }catch(err){
         next(err);
@@ -155,11 +154,12 @@ userRoute.patch("/:id/user-img", cloudUserMidd, async(req, res, next)=>{
 userRoute.post("/message/:id", async(req, res, next)=>{
     try{
         let user = await User.findById(req.params.id);
-
         if(user){
             user.msgBox.push(req.body);
             await user.save();
             res.send(user.msgBox);
+        }else{
+            res.send("There was an error loading the message.");
         }
     }catch(err){
         next(err);
@@ -185,75 +185,3 @@ userRoute.delete("/message/delete/:msgId/:userId", async(req, res, next)=>{
         next(err);
     }
 });
-
-userRoute.get("/author/:id", async(req, res, next)=>{
-    try{
-        let author = await User.findById(req.params.id);
-        res.send(author);
-    }catch(err){
-        next(err);
-    }
-})
-
-// userRoute.post("/avanced/src", authMidd, async(req, res, next)=>{
-
-//     let age = req.body.ageMin || false;
-//     let sex = req.body.sex || false;
-//     let city = req.body.city || false;
-//     let province = req.body.province || false;
-
-//     try{  
-//         if(age && sex && city && province){
-//             let users = await User.find({age: age, sex: sex, city: city, province: province,});
-//             res.send(users);
-//         }else if(age && sex && city){
-//             let users = await User.find({age: age, sex: sex, city: city});
-//             res.send(users);
-//         }else if(age && sex && province){
-//             let users = await User.find({age: age, sex: sex, province: province,});
-//             res.send(users);
-//         }else if(age && city && province){
-//             let users = await User.find({age: age, city: city, province: province,});
-//             res.send(users);
-//         }else if(sex && city && province){
-//             let users = await User.find({sex: sex, city: city, province: province,});
-//             res.send(users);
-//         }else if(age && sex){            
-//             let users = await User.find({age: age, sex: sex});
-//             res.send(users);
-//         }else if (age && city){
-//             let users = await User.find({age: age, city: city});
-//             res.send(users);
-//         }else if(age && province){
-//             let users = await User.find({age: age, province: province,});
-//             res.send(users);
-//         }else if(sex && city){
-//             let users = await User.find({sex: sex, city: city});
-//             res.send(users);
-//         }else if(sex && province){
-//             let users = await User.find({sex: sex, province: province,});
-//             res.send(users);
-//         }else if(city && province){
-//             let users = await User.find({city: city, province: province,});
-//             res.send(users);
-//         }else if(age){
-//             let users = await User.find({age: age});       
-//             res.send(users);         
-//         }else if(sex){
-//             let users = await User.find({sex: sex});
-//             res.send(users);
-//         }else if(city){
-//             let users = await User.find({city: city});
-//             res.send(users);
-//         }else if(province){
-//             let users = await User.find({province: province});
-//             res.send(users);
-//         }else{
-//             let users = await User.find();
-//             res.send(users);
-//         }
-        
-//     }catch(err){
-//         next(err);
-//     }
-// });

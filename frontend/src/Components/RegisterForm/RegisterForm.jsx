@@ -119,7 +119,6 @@ export default function RegisterForm() {
                     name='Image'
                     className='text-center'
                     onChange={(event)=>setImg(event.target.files[0])}
-                    // required
                 />
             </Form.Group>
             <Form.Group className="mb-3">

@@ -15,10 +15,11 @@ export default function Articles() {
   
   const {setMenu} = useContext(MenuContext);
   const {token, setToken} = useContext(TokenContext);
-  const {user, setUser} = useContext(UserContext);
+  const {setUser} = useContext(UserContext);
   const [categoryType, setCategoryType] = useState("");
   const [title, setTitle] = useState("");
   const [articles, setArticles] = useState([]);
+  const [notFound, setNotFound] = useState(false);
   
   const navigate = useNavigate();
   
@@ -56,12 +57,11 @@ export default function Articles() {
     console.log("body category = ", body);
     console.log("token == ", token);
 
-      console.log(`${process.env.REACT_APP_SERVER_URL}/articles/category`);
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/category`,
         {
           method:"POST",
           body: JSON.stringify(body),
-          headers:{"Authorization":"Bearer " + token,"Content-Type":"application/json"}
+          headers:{"Authorization":"Bearer " + token, "Content-Type":"application/json"}
         }
       )
 
@@ -78,6 +78,24 @@ export default function Articles() {
       console.log(err);
     }
   }
+
+  const titleSearch = async() =>{
+    try{
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/all`, 
+        {
+          method:"GET",
+          headers:{"Authorization":"Bearer " + token}
+        })
+
+        if(response.ok){
+          let json = await response.json();
+          let result = json.filter((article)=>{return article.title.toLowerCase().includes(title.toLowerCase())})
+          setArticles(result);
+        }
+      }catch(err){
+        console.log(err);
+      }
+    }
   
   useEffect(()=>{
     getArticles();
@@ -91,6 +109,17 @@ export default function Articles() {
     }
   },[categoryType]);
 
+  useEffect(()=>{
+    titleSearch();
+  }, [title]);
+
+  useEffect(()=>{
+    if(articles.length < 1 && (title.length > 0 || categoryType.length > 0)){
+      setNotFound(true);
+    }else{
+      setNotFound(false);
+    }
+  }, [title, articles])
 
   return (
     <>
@@ -143,12 +172,16 @@ export default function Articles() {
                   userId={user}
                   id={_id}
                   posted={createdAt}
+                  refresh={getArticles}
                 />
             )
           })}
-          <div style={{height:"150px"}}></div>
+          
         </Row>
       </Container>
+    </Container>
+    <Container className={`art-not-found d-flex justify-content-center align-items-center ${notFound ? "":"d-none"}`}>
+      <h4>Non abbiamo trovato articoli in base alla tua ricerca!</h4>
     </Container>
     <Container>
       <Row>

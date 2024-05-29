@@ -22,6 +22,31 @@ export default function NewArticleForm() {
     const type = "submit"
     const label = "Invia"
 
+    const updateArtImg = async(id)=>{
+        try{
+            let body = new FormData();
+            body.append('image', img);
+
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/newImage/${id}`,
+                {
+                    method:"PATCH",
+                    body: body,
+                    headers: {"Authorization":"Bearer " + token}
+                }
+            )
+
+            if(response.ok){
+                console.log("Fetch updateArtImg successful!");
+            }else{
+                console.log("Fetch updateArtImg failed!");
+            }
+            setImg("");
+        }catch(err){
+            console.log(err);
+            setImg("");
+        }
+    }
+
     const addArticle = async(event)=>{
         event.preventDefault();
 
@@ -35,7 +60,6 @@ export default function NewArticleForm() {
                 contact: contact,
                 user: user,
             }
-            console.log("body article = ", body);
             
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/new`, 
                 {
@@ -48,8 +72,12 @@ export default function NewArticleForm() {
                 console.log("Fetch article succesful!");
                 let json = await response.json();
                 console.log("body article2 = ", json)
+                if(img){
+                    updateArtImg(json._id);
+                }
+
                 alert("Il tuo articolo è stato inserito correttamente, verrai reindirizzato alla pagina articoli");
-                navigate("/articles");
+                // navigate("/articles");
             }else{
                 console.log("Fetch article failed!");
             }
@@ -59,22 +87,24 @@ export default function NewArticleForm() {
         }
     }
 
+    
+
   return (
     <Container className='article-form-cnt d-flex flex-column align-items-center pt-5'>
         <h4>Inserisci il tuo articolo</h4>
         <Form onSubmit={(event)=>{addArticle(event)}}>
             <div className='d-flex justify-content-between'>
-                <Form.Select id="category" className='me-2' onChange={(event)=>setCategory(event.target.value)}>
-                    <option value=""></option>
-                    <option value="car">Auto</option>
-                    <option value="motorcycle">Moto</option>
-                    <option value="electronics">Elettronica</option>
-                    <option value="informatics">Informatica</option>
-                    <option value="telephony">Telefonia</option>
+                <Form.Select id="category" className='me-2' onChange={(event)=>setCategory(event.target.value)} required>
+                    <option value={null}></option>
+                    <option value="Auto">Auto</option>
+                    <option value="Moto">Moto</option>
+                    <option value="Elettronica">Elettronica</option>
+                    <option value="Informatica">Informatica</option>
+                    <option value="Telefonia">Telefonia</option>
                     <option value="Sport">Sport</option>
-                    <option value="properties">Immobili</option>
-                    <option value="housewares">Casalinghi</option>
-                    <option value="work">Lavoro</option>
+                    <option value="Immobili">Immobili</option>
+                    <option value="Casalinghi">Casalinghi</option>
+                    <option value="Lavoro">Lavoro</option>
                 </Form.Select>
                 <Form.Group className="mb-3">
                     <Form.Control
@@ -90,7 +120,7 @@ export default function NewArticleForm() {
                 <Form.Control
                     type="file" 
                     className='title text-center' 
-                    onChange={(event)=>setImg(event.target.value)}
+                    onChange={(event)=>setImg(event.target.file[0])}
                 />
             </Form.Group>
             <Form.Group className="mb-3">

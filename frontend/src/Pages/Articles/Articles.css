@@ -17,3 +17,8 @@
 .article-btm-spc{
     height: 200px;
 }
+
+.art-not-found{
+    color: orangered;
+    height: 60vh;
+}

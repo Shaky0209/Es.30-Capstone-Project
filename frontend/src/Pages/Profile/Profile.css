@@ -35,7 +35,8 @@
     color: rgb(0, 187, 34);
     border-radius: 5px;
     border: 1px solid rgb(0, 187, 34);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+    /* background-color: transparent; */
 }
 
 .pop-edit{
@@ -72,4 +73,14 @@
 
 .edit-label{
     color: orangered;
+}
+
+@media screen and (max-width: 575px){
+
+    .pop-edit{
+        width: 250px;
+        height: 400px;
+        top: calc((100vh - 400px)/2);
+        left: calc((100vw - 250px)/2);
+    }    
 }

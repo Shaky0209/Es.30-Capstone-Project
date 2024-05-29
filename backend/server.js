@@ -2,6 +2,7 @@ import { config } from 'dotenv';
 import { userRoute } from './services/routes/user.route.js';
 import { articleRoute } from './services/routes/article.route.js';
 import { wallRoute } from './services/routes/wall.route.js';
+import { postRoute } from './services/routes/post.route.js';
 import cors from 'cors';
 import express from 'express';
 import passport from 'passport';
@@ -20,6 +21,7 @@ passport.use("google", googleStrategy);
 app.use("/user", userRoute );
 app.use("/articles", articleRoute);
 app.use("/wall", wallRoute);
+app.use("/posts", postRoute);
 
 const initServer = async()=>{
     try{

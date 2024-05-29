@@ -6,13 +6,13 @@ import UniButton from "../UniButton/UniButton.jsx";
 import "./FriendsAvancedSrc.css";
 
 export default function FriendsAvancedSrc({setFriends}) {
-
+  
   const [sex, setSex] = useState("");
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
   const [ageMin, setAgeMin] = useState();
   const [ageMax, setAgeMax] = useState();
-  const {token, setToken} = useContext(TokenContext)
+  const {token} = useContext(TokenContext)
   const type = "submit";
   const label = "Cerca";
 
@@ -21,8 +21,8 @@ export default function FriendsAvancedSrc({setFriends}) {
     
     let body= {
       sex: sex,
-      city: city,
-      province: province,
+      city: city.toUpperCase(),
+      province: province.toUpperCase(),
       ageMin: Number(ageMin),
       ageMax: Number(ageMax),
     }
@@ -47,18 +47,18 @@ export default function FriendsAvancedSrc({setFriends}) {
   
 
   return (
-    <Container fluid className="form-src-cnt d-flex flex-column align-items-center zIndex py-3">
+    <Container fluid className="form-src-cnt d-flex flex-column align-items-center py-3">
       <h4 className="text-center">Ricerca Avanzata</h4>
       <Form onSubmit={(event)=>avancedSrc(event)} className="px-2">
         <Form.Control
-          onChange={(event) => setProvince(event.target.value.toUpperCase())}
+          onChange={(event)=>setProvince(event.target.value)}
           className="my-2"
           size="sm"
           type="text"
           placeholder="Provincia"
         />
         <Form.Control
-          onChange={(event) => setCity(event.target.value.toUpperCase())}
+          onChange={(event)=>setCity(event.target.value)}
           className="my-2"
           size="sm"
           type="text"
@@ -66,14 +66,14 @@ export default function FriendsAvancedSrc({setFriends}) {
         />
         <div className="d-flex">
           <Form.Control
-            onChange={(event) => setAgeMin(event.target.value)}
+            onChange={(event)=>setAgeMin(event.target.value)}
             className="me-1"
             size="sm"
             type="number"
             placeholder="Età min."
           />
           <Form.Control
-            onChange={(event) => setAgeMax(event.target.value)}
+            onChange={(event)=>setAgeMax(event.target.value)}
             size="sm"
             type="number"
             placeholder="Età max."
@@ -81,7 +81,7 @@ export default function FriendsAvancedSrc({setFriends}) {
         </div>
         <Form.Check type="radio" id="sex" className="ms-3 mt-3">
           <Form.Check.Input
-            onChange={(event) => setSex(event.target.value)}
+            onChange={(event)=>setSex(event.target.value)}
             type="radio"
             name="sex"
             value={"male"}
@@ -91,7 +91,7 @@ export default function FriendsAvancedSrc({setFriends}) {
         </Form.Check>
         <Form.Check type="radio" id="sex" className="ms-3 mt-2 mb-3">
           <Form.Check.Input
-            onChange={(event) => setSex(event.target.value)}
+            onChange={(event)=>setSex(event.target.value)}
             type="radio"
             name="sex"
             value={"female"}

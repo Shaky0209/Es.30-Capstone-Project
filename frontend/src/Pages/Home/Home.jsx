@@ -6,6 +6,8 @@ import { ImgContext } from '../../Context/ImgContextProvider.jsx';
 import Row from 'react-bootstrap/esm/Row.js';
 import Col from 'react-bootstrap/esm/Col.js';
 import Container from 'react-bootstrap/esm/Container.js';
+import Form from 'react-bootstrap/Form';
+import UniButton from '../../Components/UniButton/UniButton.jsx';
 import Image from 'react-bootstrap/Image';
 import WallPost from '../../Components/WallPost/WallPost.jsx';
 import './Home.css';
@@ -16,11 +18,17 @@ export default function Home() {
   const {user, setUser} = useContext(UserContext)
   const {token, setToken} = useContext(TokenContext);
   const {setMenu} = useContext(MenuContext);
-  const {avatar, setAvatar} = useContext(ImgContext);
+  const {setAvatar} = useContext(ImgContext);
   const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState("");
+  const [inPost, setInPost] = useState(false);
+  
 
   let params = new URLSearchParams(document.location.search);
   let accToken = params.get("accToken");
+  let type = "submit";
+  let label = "Invia";
+  let now = new Date().toLocaleString();
   
   const fetchGetMe = async ()=>{
     try{
@@ -69,6 +77,38 @@ export default function Home() {
       }
     };
 
+    const sendPost = async(event)=>{
+      event.preventDefault()
+      
+      try{
+
+        let body = {
+          author: user,
+          msg: newPost,
+          posted: now,
+        }
+
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/wall/attach/${process.env.REACT_APP_WALL_ID}`,
+          {
+            method:"POST",
+            body: JSON.stringify(body),
+            headers: {"Authorization":"Bearer " + token, "Content-Type":"application/json"}
+          }
+        )
+        if(response.ok){
+          console.log("Fetch send post successful!");
+          setInPost(false);
+          setNewPost("");
+          getPosts();
+        }else{
+          console.log("Fetch send post failed!");
+
+        }
+      }catch(err){
+        console.log(err);
+      }
+    }
+
     if(accToken){
       console.log("is accToken")
       fetchGetMe();
@@ -84,18 +124,18 @@ export default function Home() {
       getPosts();
     }, []);
     
-    
     return (
       <Container fluid onClick={()=>setMenu(false)} >
+        
         <Row>
-          <Col xs={12} sm={3} lg={2} className='order-1 order-sm-0 pt-4'>
-            <div className='left-cnt'>
+          <Col xs={12} sm={2} className='order-1 order-sm-0 pt-4'>
+            <div className='left-cnt h-100'>
               <h5 className='text-center'>I nostri partner:</h5>
               <div className="adv p-3">
                 <img  style={{width:"100%"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKdI8sLvfJFGW5hGF8T6PfRcR17Sq3SJxT2UrapsgMMg&s" alt="radioblu" />
               </div>
               <div className="adv p-3">
-                <img  style={{width:"100%"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2zuyNN9Sw5f1ryL34V_5GDEbOXZgz_S74BA&s" alt="gianoauto" />
+                <img  style={{width:"100%"}} src="https://tse1.mm.bing.net/th?id=OIP.WHruC_nwCfpcd8lQDEXsmAHaDy&pid=Api" alt="idealgomme" />
               </div>
               <div className="adv p-3">
                 <img style={{width:"100%"}} src="data:image/jpeg;base64,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" alt="skyline" />
@@ -109,25 +149,58 @@ export default function Home() {
 
             </div>
           </Col>
-          <Col xs={12} sm={9} lg={10} className={`wallorder-0 order-sm-1 ${token ? "":"d-none"}`}>
+          <Col xs={12} sm={8} className={`order-0 order-sm-1 ${token ? "":"d-none"}`}>
             <div className='wall'></div>
-            <div className='d-flex flex-column align-items-center'>
+            <div className='d-flex flex-column align-items-center pb-3'>
               <h2 className='wall-title text-center pt-3'>Il "Muretto" di Fabriano</h2>
               <img style={{height:"50px"}} src="https://tse4.mm.bing.net/th?id=OIP.yI-5NnPHpyUsjuyE1CjeCQAAAA&pid=Api" alt="stemma" />
-              <button className='post-add' type='button'>Inserisci un Post</button>
+              {!inPost && <button className='post-add mt-2' type='button' onClick={()=>setInPost(!inPost)} >Inserisci un Post</button>}
+              {inPost && <button className='post-add mt-2' type='button' onClick={()=>setInPost(!inPost)} >Chiudi</button>}
+              <div className={`py-3 ${inPost ? "":"d-none"}`} >
+                <Form onSubmit={(event)=>sendPost(event)}>
+                  <Form.Group className="post-form mb-3" controlId="exampleForm.ControlTextarea1">
+                    <Form.Control
+                      as="textarea"
+                      rows={4}
+                      value={newPost}
+                      onChange={(event)=>setNewPost(event.target.value)}
+                    />
+                  </Form.Group>
+                  <UniButton type={type} label={label} />
+                </Form>
+              </div>
             </div>
-            <div>
+            <div className='d-flex flex-column-reverse'>
               {posts && posts.map((post, index)=>{
                 console.log("single post map = ", post);
                 return(
-                  // <div key={index}>{post}</div>
-                  <WallPost key={index} postId={post} />
+                  <WallPost key={index} postId={post} refresh={getPosts} setNewPost={setNewPost} />
                 )
               })}
             </div>
-
           </Col>
-          <Col xs={12} sm={9} lg={10} className={`order-0 order-sm-1 ${token ? "d-none":""}`}>
+          <Col xs={12} sm={2} className='right-col order-2 pt-4'>
+          <div className='right-cnt h-100'>
+              <h5 className='text-center'>I nostri sponsor:</h5>
+              <div className="adv p-3">
+                <img  style={{width:"100%"}} src="https://media-cdn.tripadvisor.com/media/photo-s/17/6f/30/45/logo.jpg" alt="ilNuraghe" />
+              </div>
+              <div className="adv p-3">
+                <img  style={{width:"100%"}} src="https://tse2.mm.bing.net/th?id=OIP.afqWssO0yXTLSv7wW13SPwAAAA&pid=Api" alt="lott" />
+              </div>
+              <div className="adv p-3">
+                <img style={{width:"100%"}} src="https://tse1.mm.bing.net/th?id=OIP.rI28NhJAzJu_xMAjEQV-zgHaHa&pid=Api" alt="skyline" />
+              </div>
+              <div className="adv p-3">
+                <img  style={{width:"100%"}} src="https://www.valconca.info/natura_amica/uscite/images/fabriano/logofabriano.gif" alt="museo" />
+              </div>
+              <div className="adv p-3">
+                <img  style={{width:"100%"}} src="https://tse1.mm.bing.net/th?id=OIP.5aFSU597WvghPSVMveKw9QAAAA&pid=Api" alt="cavalloPazzo" />
+              </div>
+
+            </div>
+          </Col>
+          <Col xs={12} sm={9} lg={8} className={`order-0 order-sm-1 ${token ? "d-none":""}`}>
             <div className='d-flex flex-column align-items-center pt-4'>
               <h1 className='text-center'>Fabriano “La Città Appenninica, dalla visione ai progetti”</h1>
               <p>Partner dell’iniziativa sono il Festival dell’Appennino Marchigiano, la Regione Marche, il Distretto dell’Appennino umbro-marchigiano e Symbola</p>
@@ -144,6 +217,7 @@ export default function Home() {
             </div>
           </Col>
         </Row>
+        <div className="bottom-spc-home"></div>
       </Container>
   )
 }

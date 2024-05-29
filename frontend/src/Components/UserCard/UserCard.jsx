@@ -81,7 +81,7 @@ export default function UserCard({image, name, surname, sex, birth, age, city, p
           </Form>
       </div>
     </div>
-    <Col  xxl={2} lg={3} md={4} xs={6} className='p-1'>
+    <Col  xxl={2} lg={3} md={4} sm={6} xs={12} className='p-1'>
         <div className='card d-flex justify-content-between flex-column p-2 h-100'>
           <div className='d-flex flex-column justify-content-between h-100'>
             <div>

@@ -25,10 +25,11 @@ export default function MyArticles() {
             )
             if(response.ok){
                 let json = await response.json();
+                console.log("articles = ", json);
                 if(json.length < 1){
-                    setNoArticles(true);
-                }else{
                     setNoArticles(false);
+                }else{
+                    setNoArticles(true);
                 }
                     
                 setArticles(json);
@@ -46,7 +47,7 @@ export default function MyArticles() {
     }, []);
   return (
     <Container onClick={()=>setMenu(false)}>
-        <div className={`no-articles d-flex justify-content-center align-items-center ${noArticles ? "":"d-none"}`}>
+        <div className={`no-articles d-flex justify-content-center align-items-center ${noArticles ? "d-none":""}`}>
             <h3>Non hai articoli pubblicati in questo momento.</h3>
         </div>
         <Row>

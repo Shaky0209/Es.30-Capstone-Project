@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { authMidd } from '../authentication/index.js';
+import cloudArticleMidd from '../middleware/multerArticle.js';
 import Article from '../models/article.model.js';
 
 export const articleRoute = Router();
@@ -49,7 +50,7 @@ articleRoute.get("/my/:id", authMidd, async(req, res, next)=>{
     }
 });
 
-articleRoute.get("/get/:id", authMidd, async(req, res, next)=>{
+articleRoute.get("/get/:id", authMidd,async(req, res, next)=>{
     try{
         let article = await Article.findById(req.params.id);
         res.send(article);
@@ -58,7 +59,7 @@ articleRoute.get("/get/:id", authMidd, async(req, res, next)=>{
     }
 });
 
-articleRoute.delete("/delete/:id", async(req, res, next)=>{
+articleRoute.delete("/delete/:id", authMidd, async(req, res, next)=>{
     try{
         let article = await Article.findByIdAndDelete(req.params.id);
         res.sendStatus(204);
@@ -67,22 +68,19 @@ articleRoute.delete("/delete/:id", async(req, res, next)=>{
     }
 });
 
-articleRoute.put("/edit/:id", authMidd, async(req, res, next)=>{
+articleRoute.put("/edit/:id", async(req, res, next)=>{
     try{
-        let newArticle = Article.findByIdAndUpdate(req.params.id, req.body,
-            // {
-            //     category: req.body.category,
-            //     title: req.body.title,
-            //     description: req.body.description,
-            //     city: req.body.city,
-            //     province: req.body.province,
-            //     contact: req.body.contact,
-            //     user: req.body.user,
-            // },
-            {
-                new: true,
-            });
+        let newArticle = await Article.findByIdAndUpdate(req.params.id, req.body, {new: true});
         res.send(newArticle);
+    }catch(err){
+        next(err)
+    }
+});
+
+articleRoute.patch("/new/img/:id", cloudArticleMidd, async(req, res, next)=>{
+    try{
+        let newImg = await Article.findByIdAndUpdate(req.params.id, {img: req.file.path}, {new: true});
+        res.send(newImg);
     }catch(err){
         next(err);
     }
