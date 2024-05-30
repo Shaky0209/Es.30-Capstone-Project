@@ -39,7 +39,7 @@
     /* background-color: transparent; */
 }
 
-.pop-edit{
+.pop-edit-profile{
     position: fixed;
     height: 300px;
     width: 500px;
@@ -48,8 +48,7 @@
     border: 1px solid orangered;
     border-radius: 10px;
     background-color: rgb(255, 208, 170);
-    z-index: 100;
-    /* display: none; */
+    z-index: 90;
 }
 
 .pop-edit-top{
@@ -77,10 +76,8 @@
 
 @media screen and (max-width: 575px){
 
-    .pop-edit{
-        width: 250px;
-        height: 400px;
-        top: calc((100vh - 400px)/2);
-        left: calc((100vw - 250px)/2);
+    .pop-edit-profile{
+        width: 90vw;
+        left: 3vw;
     }    
 }

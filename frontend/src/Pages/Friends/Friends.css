@@ -7,8 +7,8 @@
     padding-top: 150px;
 }
 
-.friends-page{
-    /* position: relative; */
+.friends-relative{
+    position: relative !important;
 }
 
 .my-alert{
@@ -25,11 +25,9 @@
     z-index: 0;
 }
 
-.zIndex{
-    z-index: -1 !important;
-}
 
-@media screen and (max-width: 576px){
+
+@media screen and (max-width: 575px){
 
     .search-cnt{
         padding-top: 50px;

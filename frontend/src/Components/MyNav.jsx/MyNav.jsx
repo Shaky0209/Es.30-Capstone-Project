@@ -9,6 +9,7 @@ import { MenuContext } from "../../Context/MenuContextProvider";
 import { TokenContext } from "../../Context/TokenContextProvider";
 import { ImgContext } from "../../Context/ImgContextProvider";
 import { UserContext } from "../../Context/UserContextProvider";
+import { StatusContext } from "../../Context/StatusContextProvider";
 import { PiArticleMediumBold } from "react-icons/pi";
 import "./MyNav.css";
 
@@ -25,8 +26,10 @@ export default function MyNav() {
   const { menu, setMenu } = useContext(MenuContext);
   const {token, setToken} = useContext(TokenContext);
   const {user, setUser} = useContext(UserContext);
+  const {status, setStatus} = useContext(StatusContext);
   const path = window.location.pathname;
-  let count = 0;
+  let countUser = 0;
+  let countStatus = 0;
   
 
   console.log("navbar user = ", user);
@@ -84,15 +87,27 @@ export default function MyNav() {
   }, [path]);
 
   useEffect(()=>{
-    if(count < 5){
+    if(countUser < 5){
       console.log("USEEFFECT");
       getUserImg();
-      count++
+      countUser++
     }else{
-      count = 0;
+      countUser = 0;
       // return
     }
-  }, [avatar, token]);
+  }, [avatar, user]);
+
+  useEffect(()=>{
+    if(countStatus > 0){
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("avatar");
+      countStatus = 0
+    }else{
+      countStatus++
+    }
+    
+  }, [status])
 
   console.log("Nav Token = ", token);
   console.log("Nav User = ", user);
@@ -151,13 +166,13 @@ export default function MyNav() {
           </Col>
           <Col className="rel-container nav-col-bkg px-0">
             <div className="d-flex justify-content-end pt-1">
-              {!token && <button
+              {!status && <button
                 type="button"
                 onClick={() => setMenu(!menu)}
                 className="acc-btn me-2">
                 <FontAwesomeIcon icon={faUser} />
               </button>}
-              {token && <button
+              {status && <button
                 type="button"
                 onClick={() => setMenu(!menu)}
                 style={{backgroundImage:`url(${(avatar && avatar) ? avatar : "https://pluspng.com/img-png/png-user-icon-person-icon-png-people-person-user-icon-2240.png"})`, backgroundSize:"cover", backgroundPosition:"center"}}

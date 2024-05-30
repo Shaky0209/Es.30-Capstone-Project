@@ -54,7 +54,8 @@ export default function UserCard({image, name, surname, sex, birth, age, city, p
 
   return (
     <>
-    <div className={`pop-up-contact px-0 ${popMsg ? "" : "d-none"}`}>
+    {/* Pop Up Contact  */}
+    <div className={`pop-up-contact-user px-0 ${popMsg ? "" : "d-none"}`}>
       <div className='pop-up-top d-flex justify-content-end align-items-center'>
         <p className='msgTo text-center m-0 w-100'><b className='me-2'>To:</b>{name} {surname}</p>
         <button
@@ -70,7 +71,7 @@ export default function UserCard({image, name, surname, sex, birth, age, city, p
         <h5 className='pop-up-title text-center'>Scrivi il tuo messaggio:</h5>
         <Form onSubmit={(event)=>sendMessage(event)} >
           <Form.Control
-              className='textarea mb-2'
+              className='textarea-user mb-2'
               value={message}
               onChange={(event)=>{setMessage(event.target.value)}}
               as="textarea"

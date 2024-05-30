@@ -137,7 +137,8 @@ export default function BoxMessage({author, msg, msgId, refresh, posted}) {
 
   return (
     <>
-    <div className={`reply ${popMsg ? "" : "d-none"}`}>
+    {/* Pop Up Reply */}
+    <div className={`reply ${popMsg ? "":"d-none"}`}>
         <div className="top-reply d-flex justify-content-end align-items-center">
             <p className="sender mb-0 ms-4 w-100"><b className='from me-2'>From:</b>{me.name} {me.surname}</p>
             <button
@@ -147,7 +148,7 @@ export default function BoxMessage({author, msg, msgId, refresh, posted}) {
                     setReply("")
                 }}>
                     X
-                </button>
+            </button>
         </div>
         <div className=' d-flex flex-column align-items-center'>
             <h5 className='pop-up-title ms-5 mt-2 w-100'>To: {authorMsg.name} {authorMsg.surname}</h5>
@@ -163,8 +164,8 @@ export default function BoxMessage({author, msg, msgId, refresh, posted}) {
             </Form>
         </div>  
     </div>
-
-    <div className={`delete ${popDel ? "" : "d-none"}`}>
+    {/* Pop Up Delete  */}
+    <div className={`delete ${popDel ? "":"d-none"}`}>
         <div className="top-del d-flex justify-content-end align-items-center">
             <p className="msg-del text-center mb-0 ms-4 w-100">Cancella Messaggio:</p>
             <button className='reply-cls m-1' onClick={()=>setPopDel(false)}>X</button>

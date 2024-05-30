@@ -32,6 +32,15 @@ articleRoute.get("/all", authMidd, async(req, res, next)=>{
     }
 });
 
+articleRoute.patch("/new/img/:id", cloudArticleMidd, async(req, res, next)=>{
+    try{
+        let newImg = await Article.findByIdAndUpdate(req.params.id, {img: req.file.path}, {new: true});
+        res.send(newImg);
+    }catch(err){
+        next(err);
+    }
+});
+
 articleRoute.post("/category", authMidd, async(req, res, next)=>{
     try{
         const articles = await Article.find({category: req.body.category});
@@ -77,11 +86,3 @@ articleRoute.put("/edit/:id", async(req, res, next)=>{
     }
 });
 
-articleRoute.patch("/new/img/:id", cloudArticleMidd, async(req, res, next)=>{
-    try{
-        let newImg = await Article.findByIdAndUpdate(req.params.id, {img: req.file.path}, {new: true});
-        res.send(newImg);
-    }catch(err){
-        next(err);
-    }
-});

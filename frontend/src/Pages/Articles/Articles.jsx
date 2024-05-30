@@ -20,12 +20,13 @@ export default function Articles() {
   const [title, setTitle] = useState("");
   const [articles, setArticles] = useState([]);
   const [notFound, setNotFound] = useState(false);
+  const [spin, setSpin] = useState(false)
   
   const navigate = useNavigate();
   
   const getArticles = async()=>{
+    setSpin(true)
     try{
-      console.log("Token Articles = ", token);
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/all`, 
         {
           method:"GET",
@@ -35,6 +36,7 @@ export default function Articles() {
         if(response.ok){
           let json = await response.json();
           setArticles(json);
+          setSpin(false);
           console.log("articles = ", json)
           console.log("Fetch get all articles successful!");
         }else{
@@ -45,6 +47,7 @@ export default function Articles() {
             setToken("");
             setUser("");
           }
+          setSpin(false);
         }
       }catch(err){
         console.log(err);
@@ -52,6 +55,7 @@ export default function Articles() {
   }
 
   const getCategory = async() =>{
+    setSpin(true);
     try{
     let body = {category: categoryType}
     console.log("body category = ", body);
@@ -67,11 +71,13 @@ export default function Articles() {
 
       if(response.ok){
         let json = await response.json();
-        console.log("category res = ", json)
         setArticles(json);
+        setSpin(false);
+        console.log("category res = ", json)
         console.log("Fetch get category successful!");
       }else{
         console.log("Fetch get category failed!");
+        setSpin(false);
       }
 
     }catch(err){
@@ -80,6 +86,7 @@ export default function Articles() {
   }
 
   const titleSearch = async() =>{
+    setSpin(true);
     try{
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/all`, 
         {
@@ -91,6 +98,9 @@ export default function Articles() {
           let json = await response.json();
           let result = json.filter((article)=>{return article.title.toLowerCase().includes(title.toLowerCase())})
           setArticles(result);
+          setSpin(false);
+        }else{
+          setSpin(false);
         }
       }catch(err){
         console.log(err);
@@ -153,6 +163,9 @@ export default function Articles() {
           <button className='article-add-btn mt-2' onClick={()=>navigate("/articles/new")} >Aggiungi Articolo</button>
         </Container>
       </Form>
+      <div style={{height:"70vh"}} className={`d-flex justify-content-center align-items-center w-100 ${spin ? "":"d-none"}`}>
+        <div className="spinner-border text-danger" role="status"></div>
+      </div>
       <Container fluid className='offset-1 offset-md-0'>
         <Row>
           {articles.map((article)=>{

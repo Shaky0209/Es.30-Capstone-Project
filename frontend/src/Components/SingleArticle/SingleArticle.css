@@ -34,9 +34,81 @@
     color: rgb(0, 187, 34);
     border: 1px solid rgb(0, 187, 34);
     border-radius: 5px;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px blue;
+}
+
+.art-img-edit:hover{
+    background-color: rgba(255, 255, 0, 0.2);
 }
 
 .delete{
-    z-index: 99;
+    z-index: 90;
+}
+
+.transform:hover{
+    transform: scale(1.1);
+    color: orange;
+}
+
+.pop-up-msg-article{
+    position: fixed;
+    height: 300px;
+    width: 500px;
+    top: 150px;
+    left:  calc((100% - 500px)/2);
+    border-radius: 10px;
+    border: 2px solid rgb(0, 187, 34);
+    background-color: rgb(255, 208, 170);
+    z-index: 90;
+}
+
+.pop-up-top-article{
+    height: 40px;
+    background-color: rgb(0, 187, 34);
+}
+
+.textarea-article{
+    height: 160px;
+    width: 450px !important;
+    background-color: rgb(255, 240, 228) !important;
+}
+
+.msg-label{
+    color: orangered;
+}
+
+.pop-label-top-msg-article{
+    color: white;
+    text-shadow: 2px 2px blue;
+}
+
+.pop-edit-article{
+    position: fixed;
+    height: 300px;
+    width: 500px;
+    top: calc((100vh - 300px)/2);
+    left: calc((100vw - 500px)/2);
+    border: 1px solid orangered;
+    border-radius: 10px;
+    background-color: rgb(255, 208, 170);
+    z-index: 90;
+}
+
+@media screen and (max-width: 575px){
+    
+    .textarea-article{
+        width: 80vw !important; 
+    }
+
+    .pop-up-msg-article{
+        width: 90vw !important;
+        left: 5vw;
+        z-index: 90;
+    }
+
+    .pop-edit-article{
+        width: 90vw;
+        left: 5vw;
+    }
 }

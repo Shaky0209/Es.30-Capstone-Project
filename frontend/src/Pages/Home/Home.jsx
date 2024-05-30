@@ -10,6 +10,7 @@ import Form from 'react-bootstrap/Form';
 import UniButton from '../../Components/UniButton/UniButton.jsx';
 import Image from 'react-bootstrap/Image';
 import WallPost from '../../Components/WallPost/WallPost.jsx';
+import { StatusContext } from '../../Context/StatusContextProvider.jsx';
 import './Home.css';
 
 
@@ -19,9 +20,11 @@ export default function Home() {
   const {token, setToken} = useContext(TokenContext);
   const {setMenu} = useContext(MenuContext);
   const {setAvatar} = useContext(ImgContext);
+  const {status, setStatus} = useContext(StatusContext);
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState("");
   const [inPost, setInPost] = useState(false);
+  const [spin, setSpin] = useState(false);
   
 
   let params = new URLSearchParams(document.location.search);
@@ -56,6 +59,7 @@ export default function Home() {
     };
     
     const getPosts = async()=>{
+      setSpin(true);
       try{
         const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/wall/posts/${process.env.REACT_APP_WALL_ID}`, 
           {
@@ -67,10 +71,14 @@ export default function Home() {
         if(response.ok){
           let json = await response.json();
           setPosts(json.posts);
+          setSpin(false);
+          setStatus(true);
           console.log("posts = ", json.posts);
           console.log("Fetch get Articles successful!");
         }else{
           console.log("Fetch get Articles failed!");
+          setSpin(false);
+          setStatus(false);
         }
       }catch(err){
         console.log(err);
@@ -122,7 +130,8 @@ export default function Home() {
 
     useEffect(()=>{
       getPosts();
-    }, []);
+      console.log("status = ", status);
+    }, [token, status]);
     
     return (
       <Container fluid onClick={()=>setMenu(false)} >
@@ -149,13 +158,16 @@ export default function Home() {
 
             </div>
           </Col>
-          <Col xs={12} sm={8} className={`order-0 order-sm-1 ${token ? "":"d-none"}`}>
+          <Col xs={12} sm={8} className={`order-0 order-sm-1 ${status ? "":"d-none"}`}>
             <div className='wall'></div>
             <div className='d-flex flex-column align-items-center pb-3'>
               <h2 className='wall-title text-center pt-3'>Il "Muretto" di Fabriano</h2>
               <img style={{height:"50px"}} src="https://tse4.mm.bing.net/th?id=OIP.yI-5NnPHpyUsjuyE1CjeCQAAAA&pid=Api" alt="stemma" />
               {!inPost && <button className='post-add mt-2' type='button' onClick={()=>setInPost(!inPost)} >Inserisci un Post</button>}
               {inPost && <button className='post-add mt-2' type='button' onClick={()=>setInPost(!inPost)} >Chiudi</button>}
+              <div style={{height:"60vh"}} className={`d-flex justify-content-center align-items-center w-100 ${spin ? "":"d-none"}`}>
+                <div className="spinner-border text-danger" role="status"></div>
+              </div>
               <div className={`py-3 ${inPost ? "":"d-none"}`} >
                 <Form onSubmit={(event)=>sendPost(event)}>
                   <Form.Group className="post-form mb-3" controlId="exampleForm.ControlTextarea1">
@@ -200,7 +212,7 @@ export default function Home() {
 
             </div>
           </Col>
-          <Col xs={12} sm={9} lg={8} className={`order-0 order-sm-1 ${token ? "d-none":""}`}>
+          <Col xs={12} sm={8} className={`order-0 order-sm-1 ${status ? "d-none":""}`}>
             <div className='d-flex flex-column align-items-center pt-4'>
               <h1 className='text-center'>Fabriano “La Città Appenninica, dalla visione ai progetti”</h1>
               <p>Partner dell’iniziativa sono il Festival dell’Appennino Marchigiano, la Regione Marche, il Distretto dell’Appennino umbro-marchigiano e Symbola</p>

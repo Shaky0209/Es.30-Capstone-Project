@@ -11,6 +11,7 @@
 .post-cnt{
     border: 1px solid orangered;
     border-radius: 10px;
+    z-index: 0;
 }
 
 .top-post{
@@ -52,7 +53,7 @@
     text-shadow: 2px 2px orangered;
 }
 
-.pop-up-edit{
+.pop-up-edit-wall{
     position: fixed;
     height: 400px;
     width: 66vw;
@@ -61,22 +62,22 @@
     border: 1px solid orangered;
     border-radius: 10px;
     background-color: rgb(255, 208, 170);
-    z-index: 99;
+    z-index: 90;
 }
 
-.pop-up-edit-top{
+.pop-up-edit-wall-top{
     height: 40px;
     border-radius: 10px 10px 0 0;
     background-color: orange;
 }
 
-.top-title{
+.top-title-wall{
     font-size: 14pt;
     color: white;
     text-shadow: 2px 2px orangered;
 }
 
-.btn-cls-edit{
+.btn-cls-edit-wall{
     height: 30px;
     width: 30px;
     border: 1px solid orangered;
@@ -84,13 +85,66 @@
     color: orangered;
 }
 
+.pop-up-contact-wall{
+    position: fixed;
+    height: 300px;
+    width: 500px !important;
+    top: 150px;
+    left:  calc((100% - 500px)/2);
+    border-radius: 10px;
+    border: 2px solid rgb(0, 187, 34);
+    background-color: rgb(255, 208, 170);
+    z-index: 90;
+}
+
+.pop-up-title-wall{
+    color: orangered;
+}
+
+.textarea-wall{
+    height: 160px;
+    width: 450px !important;
+}
+
+.top-del-wall{
+    border-radius: 10px 10px 0 0;
+    background-color: orange;
+
+}
+
+.delete-wall{
+    height: 300px;
+    width: 500px;
+    position: fixed;
+    top: calc((100% - 300px)/2);
+    left: calc((100% - 500px)/2);
+    border: 2px solid orangered;
+    border-radius: 10px;
+    background-color: rgb(255, 208, 170);
+}
+
+@media screen and (max-width: 767px){
+
+    .pop-up-edit-wall{
+        width: 90vw !important;   
+        left: 5vw;     
+    }
+}
 
 @media screen and (max-width: 575px){
 
-    .pop-up-contact{
-        height: 400px !important;
-        width: 260px !important;
-        top: calc((100% - 400px)/2);
-        left: calc((100% - 260px)/2) !important;
+    .pop-up-contact-wall{
+        width: 90vw !important;
+        left: 5vw;
+
+    }
+
+    .textarea-wall{
+        width: 80vw !important;
+    }
+
+    .delete-wall{
+        width: 90vw;
+        left: 5vw
     }
 }

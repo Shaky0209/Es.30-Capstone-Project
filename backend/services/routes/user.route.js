@@ -86,7 +86,7 @@ userRoute.delete("/delete/:id", authMidd, async(req, res, next)=>{
     }
 });
 
-userRoute.get("/get/:id", async(req, res, next)=>{
+userRoute.get("/get/:id", authMidd, async(req, res, next)=>{
     try{
         let user = await User.findById(req.params.id);
         res.send(user);
@@ -104,7 +104,7 @@ userRoute.put("/edit/:id", authMidd, async(req, res, next)=>{
     }
 });
 
-userRoute.post("/avanced/src", async(req, res, next)=>{
+userRoute.post("/avanced/src", authMidd, async(req, res, next)=>{
     try{
         const sex = req.body.sex;
         const province = req.body.province;
@@ -151,7 +151,7 @@ userRoute.patch("/:id/user-img", cloudUserMidd, async(req, res, next)=>{
     
 });
 
-userRoute.post("/message/:id", async(req, res, next)=>{
+userRoute.post("/message/:id", authMidd, async(req, res, next)=>{
     try{
         let user = await User.findById(req.params.id);
         if(user){
@@ -166,7 +166,7 @@ userRoute.post("/message/:id", async(req, res, next)=>{
     }
 });
 
-userRoute.delete("/message/delete/:msgId/:userId", async(req, res, next)=>{
+userRoute.delete("/message/delete/:msgId/:userId", authMidd, async(req, res, next)=>{
     try{
         let user = await User.findById(req.params.userId);
         if(user){

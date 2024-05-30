@@ -5,7 +5,7 @@ import { UserContext } from "../../Context/UserContextProvider.jsx";
 import UserCard from "../../Components/UserCard/UserCard.jsx";
 import FriendsAvancedSrc from "../../Components/FriendsAvancedsrc/FriendsAvancedSrc.jsx";
 import Container from "react-bootstrap/esm/Container.js";
-import Row from "react-bootstrap/esm/Row.js";
+import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/esm/Col.js";
 import './Friends.css';
 
@@ -54,7 +54,7 @@ export default function Friends() {
   }, []);
 
   return (
-    <Container fluid className="friends-page" onClick={()=>setMenu(false)}>
+    <Container fluid className="friends-relative" onClick={()=>setMenu(false)}>
       <div style={{height:"80vh"}} className={`d-flex justify-content-center align-items-center w-100 ${spin ? "":"d-none"}`}>
         <div className="spinner-border text-danger" role="status"></div>
       </div>
@@ -66,7 +66,7 @@ export default function Friends() {
           </div>
         </Col>
         <Col xs={10} sm={8} md={9} xxl={10} className={`offset-1 offset-sm-0 mt-5 ${token ? "":"d-none"}`}>
-          <div className="row">
+          <Row>
             {friends.map((friend) => {
               const { image, name, surname, birth, age, sex, city, province, description, msgBox, _id } = friend;
   
@@ -87,9 +87,9 @@ export default function Friends() {
                 />
               );
             })}
-          </div>
+          </Row>
         </Col>
-        <Col xs={12} className={`zIndex ${token ? "d-none":""}`}>
+        <Col xs={12} className={`${token ? "d-none":""}`}>
             <div className="friends-unlgd-cnt d-flex justify-content-center align-items-center">
               <div className="my-alert d-flex align-items-center px-md-5">
                 <h3 className="text-center">Per Accedere ai contenuti devi essere registrato ed effettuare il login.</h3>

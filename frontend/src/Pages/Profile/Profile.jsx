@@ -118,7 +118,8 @@ export default function Profile() {
     <Container fluid onClick={()=>setMenu(false)} className='pt-3'>
       <Row>
         <Col xs={12} md={5} className=''>
-          <div className={`pop-edit ${edit ? "" : "d-none"}`}>
+          {/* Pop Up Edit  */}
+          <div className={`pop-edit-profile ${edit ? "" : "d-none"}`}>
             <div className='pop-edit-top d-flex align-items-center'>
               <p className='pop-label-top text-center mb-0 w-100'>Modifica Immagine:</p>
               <button className="edit-cls me-1" onClick={()=>setEdit(false)} >X</button>

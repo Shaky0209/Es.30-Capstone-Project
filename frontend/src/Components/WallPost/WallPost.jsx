@@ -223,7 +223,7 @@ export default function WallPost({postId, refresh}) {
                 </div>
             </div>
             {/* Pop-up Contact  */}
-            <div style={{border:"1px solid orangered"}} className={`pop-up-contact px-0 ${popMsg ? "" : "d-none"}`}>
+            <div style={{border:"1px solid orangered"}} className={`pop-up-contact-wall px-0 ${popMsg ? "" : "d-none"}`}>
                 <div style={{backgroundColor:"orange", borderRadius:"5px"}} className="pop-up-top d-flex justify-content-end align-items-center">
                     <p style={{textShadow:"2px 2px orangered"}} className="msgTo text-center m-0 w-100"><b className="me-2">To:</b>{name} {surname}</p>
                     <button
@@ -236,10 +236,10 @@ export default function WallPost({postId, refresh}) {
                     </button>
                 </div>
                 <div className="d-flex flex-column align-items-center">
-                    <h5 className="pop-up-title text-center">Scrivi il tuo messaggio:</h5>
+                    <h5 className="pop-up-title-wall text-center">Scrivi il tuo messaggio:</h5>
                     <Form onSubmit={(event) => sendMessage(event)}>
                         <Form.Control
-                        className="textarea mb-2"
+                        className="textarea-wall mb-2"
                         value={message}
                         onChange={(event) => {
                             setMessage(event.target.value);
@@ -252,14 +252,14 @@ export default function WallPost({postId, refresh}) {
                 </div>
             </div>
             {/* Pop Up edit  */}
-            <div className={`pop-up-edit ${popEdit ? "":"d-none"}`}>
-                <div className='pop-up-edit-top d-flex align-items-center'>
-                    <p className='top-title text-center w-100 m-0'>Modifica Post:</p>
-                    <button className='btn-cls-edit me-1' onClick={()=>setPopEdit(false)}>X</button>
+            <div className={`pop-up-edit-wall ${popEdit ? "":"d-none"}`}>
+                <div className='pop-up-edit-wall-top d-flex align-items-center'>
+                    <p className='top-title-wall text-center w-100 m-0'>Modifica Post:</p>
+                    <button className='btn-cls-edit-wall me-1' onClick={()=>setPopEdit(false)}>X</button>
                 </div>
-                <div className='pop-up-edit-body px-3 pt-4'>
+                <div className=' px-3 pt-4'>
                     <Form onSubmit={(event)=>sendEditMsg(event)}>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group className="mb-3">
                             <Form.Control
                                 type="text"
                                 as="textarea"
@@ -273,8 +273,8 @@ export default function WallPost({postId, refresh}) {
                 </div>
             </div>
             {/* Pop Up delete  */}
-            <div className={`delete ${popDel ? "" : "d-none"}`}>
-                <div className="top-del d-flex justify-content-end align-items-center">
+            <div className={`delete-wall ${popDel ? "" : "d-none"}`}>
+                <div className="top-del-wall d-flex justify-content-end align-items-center">
                     <p className="msg-del text-center mb-0 ms-4 w-100">Cancella Messaggio:</p>
                     <button className='reply-cls m-1' onClick={()=>setPopDel(false)}>X</button>
                 </div>

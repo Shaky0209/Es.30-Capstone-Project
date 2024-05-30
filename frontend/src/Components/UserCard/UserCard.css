@@ -1,7 +1,7 @@
 .card{
     border: 1px solid orange;
     background-color: rgba(0, 187, 34, 0.1) !important;
-    z-index: -1;
+    
 }
 
 .p-user{
@@ -15,16 +15,16 @@
     color: rgb(255, 145, 0)
 }
 
-.pop-up-contact{
+.pop-up-contact-{
+    position: fixed;
     height: 300px;
-    width: 500px;
+    width: 500px !important;
     top: 150px;
     left:  calc((100% - 500px)/2);
-    position: fixed;
     border-radius: 10px;
     border: 2px solid rgb(0, 187, 34);
     background-color: rgb(255, 208, 170);
-    z-index: 100;
+    z-index: 90;
 }
 
 .pop-up-top{
@@ -44,9 +44,9 @@
     color: orangered;
 }
 
-.textarea{
+.textarea-user{
+    height: 160px;
     width: 450px !important;
-    height: 160px !important;
     background-color: rgb(255, 240, 228) !important;
 }
 
@@ -54,3 +54,16 @@
     color: white;
     text-shadow: 3px 3px rgb(0, 131, 253);
 }
+
+@media screen and (max-widt: 575px){
+    
+    .textarea-user{
+        width: 80vw;
+    }
+
+    .pop-up-contact-user{
+        width: 100vw !important;
+        left: 5vw;
+    }
+}
+

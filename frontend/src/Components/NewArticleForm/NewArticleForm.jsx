@@ -19,21 +19,22 @@ export default function NewArticleForm() {
     const [province, setProvince] = useState("");
     const [contact, setContact] = useState("");
     const navigate = useNavigate();
-    const type = "submit"
-    const label = "Invia"
+    const type = "button";
+    const label = "Invia";
 
     const updateArtImg = async(id)=>{
         try{
             let body = new FormData();
-            body.append('image', img);
-
-            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/newImage/${id}`,
+            body.append('img', img);
+            
+        
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/articles/new/img/${id}`,
                 {
                     method:"PATCH",
                     body: body,
-                    headers: {"Authorization":"Bearer " + token}
+                    headers:{"Authorization":"Bearer " + token},
                 }
-            )
+            );
 
             if(response.ok){
                 console.log("Fetch updateArtImg successful!");
@@ -46,9 +47,9 @@ export default function NewArticleForm() {
             setImg("");
         }
     }
-
+  
     const addArticle = async(event)=>{
-        event.preventDefault();
+        // event.preventDefault();
 
         try{
             let body = {
@@ -65,7 +66,7 @@ export default function NewArticleForm() {
                 {
                     method:"POST",
                     body: JSON.stringify(body),
-                    headers:{"Authorization":"Bearer " + token,"Content-type":"application/json;charset=UTF-8"}
+                    headers:{"Authorization":"Bearer " + token,"Content-type":"application/json"}
                 })
             
             if(response.ok){
@@ -75,15 +76,14 @@ export default function NewArticleForm() {
                 if(img){
                     updateArtImg(json._id);
                 }
-
                 alert("Il tuo articolo è stato inserito correttamente, verrai reindirizzato alla pagina articoli");
-                // navigate("/articles");
+                navigate("/articles");
             }else{
                 console.log("Fetch article failed!");
+                alert("Si è verificato un errore nell'inserimento del tuo articolo, non è quindi stato inserito.");
             }
         }catch(err){
             console.log(err);
-            alert("Si è verificato un errore nell'inserimento del tuo articolo, non è quindi stato inserito.");
         }
     }
 
@@ -92,7 +92,7 @@ export default function NewArticleForm() {
   return (
     <Container className='article-form-cnt d-flex flex-column align-items-center pt-5'>
         <h4>Inserisci il tuo articolo</h4>
-        <Form onSubmit={(event)=>{addArticle(event)}}>
+        <Form>
             <div className='d-flex justify-content-between'>
                 <Form.Select id="category" className='me-2' onChange={(event)=>setCategory(event.target.value)} required>
                     <option value={null}></option>
@@ -120,7 +120,7 @@ export default function NewArticleForm() {
                 <Form.Control
                     type="file" 
                     className='title text-center' 
-                    onChange={(event)=>setImg(event.target.file[0])}
+                    onChange={(event)=>setImg(event.target.files[0])}
                 />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -160,7 +160,7 @@ export default function NewArticleForm() {
                     onChange={(event)=>setContact(event.target.value)}
                 />
             </Form.Group>
-            <UniButton type={type} label={label}/>  
+            <UniButton type={type} label={label} fnc={addArticle}/>  
         </Form>
         <div className="space-btm-form-art"></div>
     </Container>

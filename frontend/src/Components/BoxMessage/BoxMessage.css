@@ -30,9 +30,9 @@
 }
 
 .reply, .delete{
+    position: fixed;
     height: 300px;
     width: 500px;
-    position: fixed;
     top: calc((100% - 300px)/2);
     left: calc((100% - 500px)/2);
     border: 2px solid orangered;
@@ -86,23 +86,20 @@
     border-radius: 0 0 10px 10px;
 }
 
+.textarea{
+    height: 160px !important;
+    width: 450px !important;
+
+}
+
 @media screen and (max-width: 575px){
 
-    .reply{
-        height: 400px !important;
-        width: 260px;
-        top: calc((100% - 400px)/2);
-        left: calc((100% - 260px)/2);
-    }
-
-    .delete{
-        width: 260px;
-        left: calc((100% - 260px)/2);
+    .delete, .reply{
+        width: 90vw;
+        left: 3vw;
     }
 
     .textarea{
-        width: 230px !important;
-        height: 250px !important;
+        width: 80vw !important;
     }
-
 }

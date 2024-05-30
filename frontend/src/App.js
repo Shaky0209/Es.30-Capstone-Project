@@ -16,6 +16,7 @@ import MenuContextProvider from "./Context/MenuContextProvider.jsx";
 import TokenContextProvider from "./Context/TokenContextProvider.jsx";
 import UserContextProvider from "./Context/UserContextProvider.jsx";
 import ImgContextProvider from "./Context/ImgContextProvider.jsx";
+import StatusContextProvider from "./Context/StatusContextProvider.jsx";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
@@ -25,21 +26,23 @@ export default function App() {
         <UserContextProvider>
           <MenuContextProvider>
             <ImgContextProvider>
-            <MyNav />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/friends" element={<Friends />} />
-                <Route path="/articles" element={<Articles />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/articles/new" element={<NewArticle />} />
-                <Route path="/my/articles" element={<MyArticles />} />
-                <Route path="/articles/edit/" element={<ArticlesEdit />} />
-                <Route path="/profile/edit/" element={<ProfileEdit />} />
-                <Route path="/*" element={<NotFound />} />
-              </Routes>
-              <MyFooter />
+              <StatusContextProvider>
+                <MyNav />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/friends" element={<Friends />} />
+                  <Route path="/articles" element={<Articles />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/articles/new" element={<NewArticle />} />
+                  <Route path="/my/articles" element={<MyArticles />} />
+                  <Route path="/articles/edit/" element={<ArticlesEdit />} />
+                  <Route path="/profile/edit/" element={<ProfileEdit />} />
+                  <Route path="/*" element={<NotFound />} />
+                </Routes>
+                <MyFooter />
+              </StatusContextProvider>
             </ImgContextProvider>
           </MenuContextProvider>
         </UserContextProvider>
