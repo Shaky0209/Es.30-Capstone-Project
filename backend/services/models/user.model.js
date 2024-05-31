@@ -67,6 +67,10 @@ const userSchema = new Schema(
                 }
             },
         ],
+        countMsg:{
+            type:"Number",
+            require: true,
+        }
     },
     {
         collection:"users",

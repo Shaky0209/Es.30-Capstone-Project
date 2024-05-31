@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { MenuContext } from "../../Context/MenuContextProvider.jsx";
 import { TokenContext } from "../../Context/TokenContextProvider.jsx";
 import { UserContext } from "../../Context/UserContextProvider.jsx";
+import { MsgContext } from "../../Context/MsgContextProvider.jsx";
+import { ImgContext } from '../../Context/ImgContextProvider.jsx';
 import UserCard from "../../Components/UserCard/UserCard.jsx";
 import FriendsAvancedSrc from "../../Components/FriendsAvancedsrc/FriendsAvancedSrc.jsx";
 import Container from "react-bootstrap/esm/Container.js";
@@ -15,6 +17,8 @@ export default function Friends() {
   const {setMenu} = useContext(MenuContext);
   const {token, setToken} = useContext(TokenContext);
   const {setUser} = useContext(UserContext);
+  const {setAvatar} = useContext(ImgContext);
+  const {whatMsg, setWhatMsg} = useContext(MsgContext);
   
 
   const getFriends = async () => {
@@ -38,9 +42,13 @@ export default function Friends() {
         console.log("Fetch get friends failed!");
         if(response.status === 401){
           localStorage.removeItem("token");
-          localStorage.removeItem("user")
-          setToken("")
-          setUser("")
+          localStorage.removeItem("user");
+          localStorage.removeItem("avatar");
+          localStorage.removeItem("getMsg");
+          setToken("");
+          setUser("");
+          setAvatar("");
+          setWhatMsg("");
         }
       }
     } catch (err) {
@@ -68,7 +76,7 @@ export default function Friends() {
         <Col xs={10} sm={8} md={9} xxl={10} className={`offset-1 offset-sm-0 mt-5 ${token ? "":"d-none"}`}>
           <Row>
             {friends.map((friend) => {
-              const { image, name, surname, birth, age, sex, city, province, description, msgBox, _id } = friend;
+              const { image, name, surname, birth, age, sex, city, province, description, msgBox, countMsg, _id } = friend;
   
               return (
                 <UserCard
@@ -84,6 +92,7 @@ export default function Friends() {
                   province={province}
                   description={description}
                   msgBox={msgBox}
+                  countMsg={countMsg}
                 />
               );
             })}

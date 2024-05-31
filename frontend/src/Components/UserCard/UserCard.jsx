@@ -6,16 +6,41 @@ import Form from 'react-bootstrap/Form';
 import UniButton from '../UniButton/UniButton';
 import './UserCard.css';
 
-export default function UserCard({image, name, surname, sex, birth, age, city, province, description, id }) {
+export default function UserCard({image, name, surname, sex, birth, age, city, province, description, countMsg, id }) {
   
   let {user} = useContext(UserContext);
   let {token} = useContext(TokenContext);
   let now = new Date().toLocaleString();
+  let newMsg = 0;
 
   const [popMsg, setPopMsg] = useState(false);
   const [message, setMessage] = useState("");
   const label = "invia";
   const type = "submit";
+
+  const refreshCountMsg = async()=>{
+        
+    let body = {countMsg: newMsg};
+
+    console.log("body refresh = ", body);
+
+    try{
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/count/msg/${id}`,
+            {
+                method:"PATCH",
+                body: JSON.stringify(body),
+                headers:{"Authorization":"Bearer " + token,"Content-Type":"application/json"}
+            }
+        )
+        if(response.ok){
+            console.log("Fetch refresh count successful!");
+        }else{
+            console.log("Fetch refresh count failed!");
+        }
+    }catch(err){
+        console.log(err);
+    }
+  }
 
   const sendMessage = async(event)=>{
     
@@ -40,6 +65,8 @@ export default function UserCard({image, name, surname, sex, birth, age, city, p
         let json = await response.json();
         console.log(json);
         console.log("Fetch post message successful!");
+        newMsg = countMsg + 1;
+        refreshCountMsg();
       }else{
         console.log("Fetch post message failed!");
       }

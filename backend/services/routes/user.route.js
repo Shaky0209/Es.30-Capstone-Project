@@ -151,7 +151,7 @@ userRoute.patch("/:id/user-img", cloudUserMidd, async(req, res, next)=>{
     
 });
 
-userRoute.post("/message/:id", authMidd, async(req, res, next)=>{
+userRoute.post("/message/:id", async(req, res, next)=>{
     try{
         let user = await User.findById(req.params.id);
         if(user){
@@ -181,6 +181,15 @@ userRoute.delete("/message/delete/:msgId/:userId", authMidd, async(req, res, nex
         }else{
             res.sendStatus(404);
         }
+    }catch(err){
+        next(err);
+    }
+});
+
+userRoute.patch("/count/msg/:id", async(req, res, next)=>{
+    try{
+        const newCount = await User.findByIdAndUpdate(req.params.id, {countMsg: req.body.countMsg}, {new: true});
+        res.send(newCount);
     }catch(err){
         next(err);
     }

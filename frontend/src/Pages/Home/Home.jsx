@@ -3,6 +3,8 @@ import {MenuContext} from '../../Context/MenuContextProvider.jsx';
 import {TokenContext} from '../../Context/TokenContextProvider.jsx';
 import {UserContext} from '../../Context/UserContextProvider.jsx'
 import { ImgContext } from '../../Context/ImgContextProvider.jsx';
+import { StatusContext } from '../../Context/StatusContextProvider.jsx';
+import { MsgContext } from "../../Context/MsgContextProvider.jsx";
 import Row from 'react-bootstrap/esm/Row.js';
 import Col from 'react-bootstrap/esm/Col.js';
 import Container from 'react-bootstrap/esm/Container.js';
@@ -10,7 +12,6 @@ import Form from 'react-bootstrap/Form';
 import UniButton from '../../Components/UniButton/UniButton.jsx';
 import Image from 'react-bootstrap/Image';
 import WallPost from '../../Components/WallPost/WallPost.jsx';
-import { StatusContext } from '../../Context/StatusContextProvider.jsx';
 import './Home.css';
 
 
@@ -21,6 +22,7 @@ export default function Home() {
   const {setMenu} = useContext(MenuContext);
   const {setAvatar} = useContext(ImgContext);
   const {status, setStatus} = useContext(StatusContext);
+  const {whatMsg, setWhatMsg} = useContext(MsgContext);
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState("");
   const [inPost, setInPost] = useState(false);
@@ -46,7 +48,7 @@ export default function Home() {
           console.log("User fetch successful!");
           console.log("home GoogleUser = ", json);
           localStorage.setItem("user", json._id);
-          localStorage.setItem("avatar", json.image)
+          localStorage.setItem("avatar", json.image);
           setAvatar(json.image);
           setUser(json._id);
         }else{
@@ -79,6 +81,17 @@ export default function Home() {
           console.log("Fetch get Articles failed!");
           setSpin(false);
           setStatus(false);
+
+          if(token && response.status === 401){
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("avatar");
+            localStorage.removeItem("getMsg");
+            setToken("");
+            setUser("");
+            setAvatar("");
+            setWhatMsg("");
+          }
         }
       }catch(err){
         console.log(err);
@@ -131,7 +144,7 @@ export default function Home() {
     useEffect(()=>{
       getPosts();
       console.log("status = ", status);
-    }, [token, status]);
+    }, [status, token]);
     
     return (
       <Container fluid onClick={()=>setMenu(false)} >

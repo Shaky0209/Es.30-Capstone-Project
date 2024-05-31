@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { TokenContext } from '../../Context/TokenContextProvider.jsx';
 import { UserContext } from '../../Context/UserContextProvider.jsx';
+import { MsgContext } from '../../Context/MsgContextProvider.jsx';
 import Form from 'react-bootstrap/esm/Form';
 import Col from 'react-bootstrap/esm/Col';
 import Alert from 'react-bootstrap/Alert';
@@ -11,11 +12,13 @@ export default function WallPost({postId, refresh}) {
 
     const {token} = useContext(TokenContext);
     const {user} = useContext(UserContext);
+    const {whatMsg, setWhatMsg} = useContext(MsgContext)
     const [post, setPost] = useState("");
     const [authorData, setAuthorData] = useState("");
     const [message, setMessage] = useState("");
     const [popMsg, setPopMsg] = useState("");
     const [sendMsg, setSendMsg] = useState("");
+    // const [newMsg, setNewMsg] = useState(0);
     const [popEdit, setPopEdit] = useState(false);
     const [popDel, setPopDel] = useState(false);
 
@@ -23,6 +26,7 @@ export default function WallPost({postId, refresh}) {
     const label = "Invia";
 
     let now = new Date().toLocaleString();
+    let newMsg = 0;
 
 
     const getPost = async()=>{
@@ -50,6 +54,7 @@ export default function WallPost({postId, refresh}) {
 
     const {author, msg, posted} = post;
     console.log("author = ", author);
+
     const getAuthorData = async()=>{
         try{
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/get/${author}`,
@@ -60,7 +65,6 @@ export default function WallPost({postId, refresh}) {
             )
 
             if(response.ok){
-                console.log("authorData = ", response);
                 let json = await response.json();
                 console.log("authorData = ", json);
                 setAuthorData(json);
@@ -69,6 +73,30 @@ export default function WallPost({postId, refresh}) {
                 console.log("Fetch get author data failed!");
             }
             
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    const refreshCountMsg = async()=>{
+        
+        let body = {countMsg: newMsg};
+
+        console.log("body refresh = ", body);
+
+        try{
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/count/msg/${author}`,
+                {
+                    method:"PATCH",
+                    body: JSON.stringify(body),
+                    headers:{"Authorization":"Bearer " + token,"Content-Type":"application/json"}
+                }
+            )
+            if(response.ok){
+                console.log("Fetch refresh count successful!");
+            }else{
+                console.log("Fetch refresh count failed!");
+            }
         }catch(err){
             console.log(err);
         }
@@ -90,17 +118,20 @@ export default function WallPost({postId, refresh}) {
                 {
                     method:"POST",
                     body: JSON.stringify(body),
-                    headers:{"Autorization":"Bearer " + token, "Content-Type":"application/json"}
+                    headers:{"Autorization":"Bearer " + token, "Content-Type":"application/json;charset=UTF-8"}
                 }
             )
             
             if(response.ok){
                 console.log("Fetch post msg successful!");
-                setPopMsg(false);
+                newMsg = authorData.countMsg + 1;
+                refreshCountMsg();
             }else{
                 console.log("Fetch post msg failed!");
                 alert("Si è verificato un errore durante l'invio del messaggio.");
             }
+            setPopMsg(false)
+            setMessage("");
 
         }catch(err){
             console.log(err);
@@ -200,6 +231,10 @@ export default function WallPost({postId, refresh}) {
         console.log("use effect")
         getSinglePost()
     }, []);
+
+    useEffect(()=>{
+        console.log("newMsg = ", newMsg);
+    }, [newMsg]);
 
 
     const { name, surname, image, _id } = authorData;

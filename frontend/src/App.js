@@ -17,6 +17,7 @@ import TokenContextProvider from "./Context/TokenContextProvider.jsx";
 import UserContextProvider from "./Context/UserContextProvider.jsx";
 import ImgContextProvider from "./Context/ImgContextProvider.jsx";
 import StatusContextProvider from "./Context/StatusContextProvider.jsx";
+import MsgContextProvider from "./Context/MsgContextProvider.jsx";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
           <MenuContextProvider>
             <ImgContextProvider>
               <StatusContextProvider>
+                <MsgContextProvider>
                 <MyNav />
                 <Routes>
                   <Route path="/" element={<Home />} />
@@ -42,6 +44,7 @@ export default function App() {
                   <Route path="/*" element={<NotFound />} />
                 </Routes>
                 <MyFooter />
+                </MsgContextProvider>
               </StatusContextProvider>
             </ImgContextProvider>
           </MenuContextProvider>

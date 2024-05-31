@@ -218,10 +218,52 @@
 
 .rotate-right{
     transform: rotate(45deg) translate(9px, 9px);
-
 }
 
 .rotate-left{
     transform: rotate(-45deg) translate(7px, -6px);
-    
+}
+
+.msgIcon{
+    font-size: 30pt;
+    color: rgb(0, 187, 34);
+    cursor: pointer;
+}
+
+.msgIcon-resp{
+    font-size: 20pt;
+    color: rgb(0, 187, 34);
+    cursor: pointer;
+}
+
+.msgIcon-cont{
+    position: relative;
+}
+
+.notify{
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    height: 20px;
+    width: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: red;
+    /* border: 1px solid white; */
+    border-radius: 50%;
+}
+
+.notify-resp{
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    height: 15px;
+    width: 15px;
+    font-size: 10px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: red;
+    /* border: 1px solid white; */
+    border-radius: 50%;
 }

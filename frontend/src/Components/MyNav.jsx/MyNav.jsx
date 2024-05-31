@@ -4,12 +4,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faUserGroup, faUser} from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faUserGroup, faUser, faEnvelope} from "@fortawesome/free-solid-svg-icons";
 import { MenuContext } from "../../Context/MenuContextProvider";
 import { TokenContext } from "../../Context/TokenContextProvider";
 import { ImgContext } from "../../Context/ImgContextProvider";
 import { UserContext } from "../../Context/UserContextProvider";
 import { StatusContext } from "../../Context/StatusContextProvider";
+import { MsgContext } from "../../Context/MsgContextProvider";
 import { PiArticleMediumBold } from "react-icons/pi";
 import "./MyNav.css";
 
@@ -19,22 +20,21 @@ export default function MyNav() {
   const [slcHome, setSlcHome] = useState(true);
   const [slcFriends, setSlcFriends] = useState(false);
   const [slcMarket, setSlcMarket] = useState(false);
-  const [userImg, setUserImg] = useState(null);
   const [actButton, setActButton] = useState(false);
 
   const {avatar, setAvatar} = useContext(ImgContext)
-  const { menu, setMenu } = useContext(MenuContext);
+  const {menu, setMenu} = useContext(MenuContext);
   const {token, setToken} = useContext(TokenContext);
   const {user, setUser} = useContext(UserContext);
   const {status, setStatus} = useContext(StatusContext);
+  const {whatMsg, setWhatMsg} = useContext(MsgContext);
   const path = window.location.pathname;
   let countUser = 0;
   let countStatus = 0;
-  
 
   console.log("navbar user = ", user);
 
-  const getUserImg = async()=>{
+  const getUserParams = async()=>{
     try{
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/get/${user}`, 
         {
@@ -45,9 +45,11 @@ export default function MyNav() {
 
       if(response.ok){
         let json = await response.json();
-        console.log("getImg = ", json);
+        console.log("getUserParams = ", json);
         localStorage.setItem("avatar", avatar)
+        localStorage.setItem("getMsg", json.countMsg);
         setAvatar(json?.image);
+        setWhatMsg(json.countMsg);
       }else{
         setAvatar(null);
       }
@@ -89,7 +91,7 @@ export default function MyNav() {
   useEffect(()=>{
     if(countUser < 5){
       console.log("USEEFFECT");
-      getUserImg();
+      getUserParams();
       countUser++
     }else{
       countUser = 0;
@@ -97,17 +99,17 @@ export default function MyNav() {
     }
   }, [avatar, user]);
 
-  useEffect(()=>{
-    if(countStatus > 0){
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("avatar");
-      countStatus = 0
-    }else{
-      countStatus++
-    }
+  // useEffect(()=>{
+  //   if(countStatus > 0){
+  //     localStorage.removeItem("token");
+  //     localStorage.removeItem("user");
+  //     localStorage.removeItem("avatar");
+  //     countStatus = 0
+  //   }else{
+  //     countStatus++
+  //   }
     
-  }, [status])
+  // }, [status])
 
   console.log("Nav Token = ", token);
   console.log("Nav User = ", user);
@@ -165,7 +167,13 @@ export default function MyNav() {
             </div>
           </Col>
           <Col className="rel-container nav-col-bkg px-0">
-            <div className="d-flex justify-content-end pt-1">
+            <div className="d-flex justify-content-end align-items-center pt-1">
+              {(whatMsg > 0) && <div className="msgIcon-cont me-3">
+                <FontAwesomeIcon className="msgIcon" onClick={()=>navigate("/profile")} icon={faEnvelope} />
+                {console.log("msg component = ", whatMsg)}
+                <div className="notify d-flex justify-content-center align-items-center">{whatMsg}</div>
+              </div>}
+
               {!status && <button
                 type="button"
                 onClick={() => setMenu(!menu)}
@@ -180,7 +188,7 @@ export default function MyNav() {
               >              
               </button>}
               <div className={`drop-menu d-flex flex-column align-items-center ${menu ? "" : "d-none"}`}>
-                {!token &&<Link to="/register" onClick={() => {setMenu(false);}} className="drop-link py-1">
+                {!token &&<Link to="/register" onClick={()=>setMenu(false)} className="drop-link py-1">
                   Registrati
                 </Link>}
                 {!token && <Link to="/login" onClick={() => {setMenu(false);}} className="drop-link py-1">
@@ -196,13 +204,14 @@ export default function MyNav() {
                     to="/"
                     onClick={()=>{
                       setMenu(false);
-                      setUserImg(null);
+                      setAvatar(null);
                       setToken(false);
                       setUser(false);
                       setAvatar("");
                       localStorage.removeItem("token");
                       localStorage.removeItem("user");
-                      localStorage.removeItem("avatar")
+                      localStorage.removeItem("avatar");
+                      localStorage.removeItem("getMsg");
                       }}
                     className="drop-link py-1">
                     Esci
@@ -214,8 +223,7 @@ export default function MyNav() {
       </div>
       <div className="navbar-space"></div>
     </Container>
-    
-
+    {/* Responsive Nav */}
     <Container fluid className="d-md-none p-0">
       <div className="fixed-bar">
         <Row className="nav display-flex justify-content-between px-0 mx-0">
@@ -225,6 +233,11 @@ export default function MyNav() {
             </div>
           </Col>
           <Col className="nav-col-bkg d-flex justify-content-end align-items-center px-0 me-2">
+            {(whatMsg > 0) && <div className="msgIcon-cont me-3">
+              <FontAwesomeIcon className="msgIcon-resp" onClick={()=>navigate("/profile")} icon={faEnvelope} />
+              {console.log("msg component = ", whatMsg)}
+              <div className="notify-resp d-flex justify-content-center align-items-center">{whatMsg}</div>
+            </div>}
             <button
               className={`burger-btn ${actButton ? "d-none" : ""}`}
               type="button"
@@ -346,7 +359,7 @@ export default function MyNav() {
               to="/"
               onClick={()=>{
                 setMenu(false);
-                setUserImg(null);
+                setAvatar(null);
                 setToken(false);
                 setUser(false);
                 setActButton(false);

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { ImgContext } from '../../Context/ImgContextProvider.jsx';
+import { MsgContext } from '../../Context/MsgContextProvider.jsx';
 import Col from 'react-bootstrap/esm/Col';
 import Row from 'react-bootstrap/esm/Row';
 import Form from 'react-bootstrap/esm/Form';
@@ -21,6 +22,7 @@ export default function Profile() {
   const {token} = useContext(TokenContext);
   const {user} = useContext(UserContext);
   const {setMenu} = useContext(MenuContext);
+  const {whatMsg, setWhatMsg} = useContext(MsgContext);
 
   const [img, setImg] = useState("");
   const [name, setName] = useState("");
@@ -49,7 +51,6 @@ export default function Profile() {
           headers:{"Authorization":"Bearer " + token}
         }
       )
-
       if(response.ok){
 
         let json = await response.json();
@@ -110,12 +111,43 @@ export default function Profile() {
     }
   };
 
+  const msgRead = async()=>{
+    try{
+
+      let body = {countMsg: 0}
+
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/count/msg/${user}`,
+        {
+          method:"PATCH",
+          body: JSON.stringify(body),
+          headers:{"Authorization":"Bearer " + token,"Content-Type":"application/json"},
+        }
+      )
+      if(response.ok){
+        console.log("Fetch msg read successful!");
+        setWhatMsg(0);
+        localStorage.setItem("getMsg", 0);
+      }else{
+        console.log("Fetch msg read failed!");
+      }
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   useEffect(()=>{
     getUserProfile();
   }, []);
 
   return (
-    <Container fluid onClick={()=>setMenu(false)} className='pt-3'>
+    <Container
+      fluid
+      onClick={()=>{
+        setMenu(false)
+        msgRead()
+      }}
+      className='pt-3'
+    >
       <Row>
         <Col xs={12} md={5} className=''>
           {/* Pop Up Edit  */}

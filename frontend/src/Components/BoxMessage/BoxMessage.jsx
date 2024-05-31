@@ -18,6 +18,7 @@ export default function BoxMessage({author, msg, msgId, refresh, posted}) {
     const type = "submit";
     const label = "Invia";
     let now = new Date().toLocaleString();
+    let newMsg = 0;
     
 
     
@@ -67,6 +68,30 @@ export default function BoxMessage({author, msg, msgId, refresh, posted}) {
         }
     }
 
+    const refreshCountMsg = async()=>{
+        
+        let body = {countMsg: newMsg};
+
+        console.log("body refresh = ", body);
+
+        try{
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/count/msg/${author}`,
+                {
+                    method:"PATCH",
+                    body: JSON.stringify(body),
+                    headers:{"Authorization":"Bearer " + token,"Content-Type":"application/json"}
+                }
+            )
+            if(response.ok){
+                console.log("Fetch refresh count successful!");
+            }else{
+                console.log("Fetch refresh count failed!");
+            }
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     const sendMessage= async(event)=>{
     
         event.preventDefault();
@@ -92,6 +117,8 @@ export default function BoxMessage({author, msg, msgId, refresh, posted}) {
                 console.log("Fetch send message successfu!");
                 setPopMsg(false);
                 setReply("");
+                newMsg = authorMsg.countMsg + 1;
+                refreshCountMsg();
             }else{
                 console.log("Fetch send message failed!");
 

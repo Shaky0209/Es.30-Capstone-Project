@@ -75,6 +75,8 @@ export default function RegisterForm() {
                     province: province.toUpperCase(),
                     password: password,
                     description: description,
+                    msgBox:[],
+                    countMsg : 0,
                 }
 
                 console.log(body)
