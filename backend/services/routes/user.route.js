@@ -86,7 +86,7 @@ userRoute.delete("/delete/:id", authMidd, async(req, res, next)=>{
     }
 });
 
-userRoute.get("/get/:id", authMidd, async(req, res, next)=>{
+userRoute.get("/get/:id",  async(req, res, next)=>{
     try{
         let user = await User.findById(req.params.id);
         res.send(user);

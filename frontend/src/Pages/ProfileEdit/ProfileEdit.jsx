@@ -140,7 +140,6 @@ export default function ProfileEdit() {
                 <Form.Label className='text-center w-100'>Inserisci l'immagine principale del tuo profilo</Form.Label> 
                 <Form.Control 
                     type="file"
-                    name='Image'
                     className='text-center'
                     onChange={(event)=>setImg(event.target.files[0])}
                 />

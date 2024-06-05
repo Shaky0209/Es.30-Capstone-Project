@@ -95,21 +95,10 @@ export default function MyNav() {
       countUser++
     }else{
       countUser = 0;
-      // return
     }
-  }, [avatar, user]);
+  }, [avatar, user, path]);
 
-  // useEffect(()=>{
-  //   if(countStatus > 0){
-  //     localStorage.removeItem("token");
-  //     localStorage.removeItem("user");
-  //     localStorage.removeItem("avatar");
-  //     countStatus = 0
-  //   }else{
-  //     countStatus++
-  //   }
-    
-  // }, [status])
+  
 
   console.log("Nav Token = ", token);
   console.log("Nav User = ", user);
@@ -168,7 +157,7 @@ export default function MyNav() {
           </Col>
           <Col className="rel-container nav-col-bkg px-0">
             <div className="d-flex justify-content-end align-items-center pt-1">
-              {(whatMsg > 0) && <div className="msgIcon-cont me-3">
+              {(whatMsg > 0) && status && <div className="msgIcon-cont me-3">
                 <FontAwesomeIcon className="msgIcon" onClick={()=>navigate("/profile")} icon={faEnvelope} />
                 {console.log("msg component = ", whatMsg)}
                 <div className="notify d-flex justify-content-center align-items-center">{whatMsg}</div>
@@ -178,7 +167,7 @@ export default function MyNav() {
                 type="button"
                 onClick={() => setMenu(!menu)}
                 className="acc-btn me-2">
-                <FontAwesomeIcon icon={faUser} />
+                <FontAwesomeIcon icon={faUser} /> 
               </button>}
               {status && <button
                 type="button"
@@ -208,6 +197,7 @@ export default function MyNav() {
                       setToken(false);
                       setUser(false);
                       setAvatar("");
+                      setWhatMsg(0);
                       localStorage.removeItem("token");
                       localStorage.removeItem("user");
                       localStorage.removeItem("avatar");
@@ -233,7 +223,7 @@ export default function MyNav() {
             </div>
           </Col>
           <Col className="nav-col-bkg d-flex justify-content-end align-items-center px-0 me-2">
-            {(whatMsg > 0) && <div className="msgIcon-cont me-3">
+            {(whatMsg > 0) && status &&<div className="msgIcon-cont me-3">
               <FontAwesomeIcon className="msgIcon-resp" onClick={()=>navigate("/profile")} icon={faEnvelope} />
               {console.log("msg component = ", whatMsg)}
               <div className="notify-resp d-flex justify-content-center align-items-center">{whatMsg}</div>

@@ -10,7 +10,9 @@ const options = {
 }
 
 const googleStrategy = new GoogleStrategy(options, async( _, __, profile, passportNext)=>{
+
     const {email, given_name, family_name,  sub, picture}= profile._json;
+
     try{
         const user = await User.findOne({email});
 
@@ -24,12 +26,14 @@ const googleStrategy = new GoogleStrategy(options, async( _, __, profile, passpo
                 surname:"Cognome",
                 email: email,
                 birth: "01-01-1990",
+                age: new Date().getFullYear() - 1990,
                 sex:"male",
                 city:"Roma",
                 password: sub,
                 googleId: sub,
                 description:"Ciao...",
                 msgBox:[],
+                countMsg: 0,
             });
 
             await newUser.save();

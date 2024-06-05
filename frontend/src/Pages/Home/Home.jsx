@@ -49,8 +49,10 @@ export default function Home() {
           console.log("home GoogleUser = ", json);
           localStorage.setItem("user", json._id);
           localStorage.setItem("avatar", json.image);
-          setAvatar(json.image);
+          localStorage.setItem("getMsg", json.countMsg)
           setUser(json._id);
+          setAvatar(json.image);
+          setWhatMsg(json.countMsg)
         }else{
           console.log(response);
           console.log("User fetch failed!");
